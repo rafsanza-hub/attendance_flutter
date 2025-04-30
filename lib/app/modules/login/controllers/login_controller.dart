@@ -10,7 +10,7 @@ class LoginController extends GetxController {
   final isLoading = false.obs;
 
   final FirebaseAuth auth = FirebaseAuth.instance;
-  final user = FirebaseAuth.instance.currentUser;
+  final currentUser = FirebaseAuth.instance.currentUser.obs;
 
   login(String email, String password) async {
     isLoading.value = true;

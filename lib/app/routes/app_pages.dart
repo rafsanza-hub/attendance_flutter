@@ -1,9 +1,13 @@
 import 'package:get/get.dart';
 
+import '../modules/attendance/bindings/attendance_binding.dart';
+import '../modules/attendance/views/attendance_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
+import '../modules/profile/bindings/profile_binding.dart';
+import '../modules/profile/views/profile_view.dart';
 import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
 
@@ -19,6 +23,13 @@ class AppPages {
       name: _Paths.HOME,
       page: () => HomeView(),
       binding: HomeBinding(),
+      children: [
+        GetPage(
+          name: _Paths.ATTENDANCE,
+          page: () => AttendanceView(),
+          binding: AttendanceBinding(),
+        ),
+      ],
     ),
     GetPage(
       name: _Paths.LOGIN,
@@ -29,6 +40,11 @@ class AppPages {
       name: _Paths.REGISTER,
       page: () => RegisterView(),
       binding: RegisterBinding(),
+    ),
+    GetPage(
+      name: _Paths.PROFILE,
+      page: () => const ProfileView(),
+      binding: ProfileBinding(),
     ),
   ];
 }
