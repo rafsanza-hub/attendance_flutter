@@ -20,7 +20,7 @@ class LoginController extends GetxController {
         password: password,
       );
       if (UserCredential.user!.emailVerified) {
-        Get.offAllNamed(Routes.HOME);
+        Get.offAllNamed(Routes.MAIN);
       } else {
         throw FirebaseAuthException(code: 'email-not-verified');
       }

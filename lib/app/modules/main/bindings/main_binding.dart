@@ -3,13 +3,13 @@ import 'package:attendance_flutter/app/modules/login/controllers/login_controlle
 import 'package:attendance_flutter/app/modules/register/controllers/register_controller.dart';
 import 'package:get/get.dart';
 
-import '../controllers/home_controller.dart';
+import '../controllers/main_controller.dart';
 
-class HomeBinding extends Bindings {
+class MainBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<HomeController>(
-      () => HomeController(),
+    Get.lazyPut<MainController>(
+      () => MainController(),
     );
     Get.lazyPut<AttendanceController>(
       () => AttendanceController(),

@@ -19,7 +19,7 @@ void main() async {
       theme: ModernTheme.light(),
       darkTheme: ModernTheme.dark(),
       initialRoute:
-          user != null && user.emailVerified ? Routes.HOME : AppPages.INITIAL,
+          user != null && user.emailVerified ? Routes.MAIN : AppPages.INITIAL,
       getPages: AppPages.routes,
     ),
   );

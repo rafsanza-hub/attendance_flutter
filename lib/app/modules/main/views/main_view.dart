@@ -1,13 +1,14 @@
 import 'package:attendance_flutter/app/modules/attendance/views/attendance_view.dart';
-import 'package:attendance_flutter/app/modules/home/controllers/home_controller.dart';
+import 'package:attendance_flutter/app/modules/dashboard/views/dashboard_view.dart';
+import 'package:attendance_flutter/app/modules/main/controllers/main_controller.dart';
 import 'package:attendance_flutter/app/modules/login/views/login_view.dart';
 import 'package:attendance_flutter/app/modules/profile/views/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
-class HomeView extends GetView<HomeController> {
-  const HomeView({Key? key}) : super(key: key);
+class MainView extends GetView<MainController> {
+  const MainView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,8 +16,8 @@ class HomeView extends GetView<HomeController> {
         () => IndexedStack(
           index: controller.selectedIndex.value,
           children: [
+            DashboardView(),
             AttendanceView(),
-            LoginView(),
             ProfileView(),
           ],
         ),
@@ -28,12 +29,12 @@ class HomeView extends GetView<HomeController> {
           elevation: 0,
           destinations: [
             NavigationDestination(
-              icon: Icon(Iconsax.call_incoming),
-              selectedIcon: Icon(Iconsax.call_incoming5),
+              icon: Icon(Iconsax.home),
+              selectedIcon: Icon(Iconsax.home_15),
               label: 'Home',
             ),
             NavigationDestination(
-              icon: Icon(Iconsax.call_incoming),
+              icon: Icon(Iconsax.clock),
               selectedIcon: Icon(Iconsax.call_incoming5),
               label: 'Home',
             ),
