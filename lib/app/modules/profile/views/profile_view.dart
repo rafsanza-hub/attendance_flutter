@@ -1,222 +1,220 @@
-import 'package:attendance_flutter/app/modules/login/controllers/login_controller.dart';
-import 'package:attendance_flutter/core/constants/sizes.dart';
-import 'package:attendance_flutter/core/theme/theme.dart';
+import 'package:attendance_flutter/app/data/models/app_chip.dart';
+import 'package:attendance_flutter/app/modules/login/views/login_view.dart';
+import 'package:attendance_flutter/app/modules/profile/controllers/profile_controller.dart';
+import 'package:attendance_flutter/core/constants/app_colors.dart';
+import 'package:attendance_flutter/core/constants/app_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
+
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 
-class ProfileView extends StatefulWidget {
+class ProfileView extends GetView<ProfileController> {
   const ProfileView({super.key});
-
-  @override
-  State<ProfileView> createState() => _ProfileViewState();
-}
-
-class _ProfileViewState extends State<ProfileView> {
-  final LoginController _loginController = Get.find<LoginController>();
-  String _selectedLanguage = 'Bahasa Indonesia';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _buildBody(context),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 16),
+              Text(
+                'Profile',
+                style: AppTextStyles.headlineBold,
+              ),
+              const SizedBox(height: 28),
+              Container(
+                width: 90,
+                height: 90,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: const DecorationImage(
+                    image: AssetImage('assets/images/avatar.png'),
+                    fit: BoxFit.cover,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 0),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'Rafsan Zaini',
+                style: AppTextStyles.subheadlineBold,
+              ),
+              const SizedBox(height: 2),
+              Text(
+                'rapsanza@gmail.com',
+                style: AppTextStyles.caption1Regular.copyWith(
+                  color: AppColors.greyText,
+                ),
+              ),
+              const SizedBox(height: 12),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     Get.to(EditProfileView());
+              //   },
+              //   style: ElevatedButton.styleFrom(
+              //     padding:
+              //         const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              //     shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.circular(8),
+              //     ),
+
+              //     minimumSize: const Size(0, 0),
+              //     elevation: 1,
+              //     shadowColor: Colors.black.withOpacity(0.1),
+              //   ),
+              //   child: Text(
+              //     'Edit Profile',
+              //     style: AppTextStyles.footnoteBold.copyWith(
+              //       color: Colors.white,
+              //     ),
+              //   ),
+              // ),
+              AppChip('Edit Profile',
+                  isSelected: true,
+                  shadowColor: AppColors.primary.withOpacity(0.5)),
+              const SizedBox(height: 17),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 22),
+                child: Column(children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: AppColors.greySecondary),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          height: 50,
+                          width: 50,
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Your personal information is complete',
+                                style: AppTextStyles.footnoteBold,
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                'Thank you for filling in your personal information for course administration purposes.',
+                                style: AppTextStyles.caption2Regular.copyWith(
+                                  color: AppColors.greyText,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  _buildMenuItem(
+                    icon: IconlyBold.activity,
+                    svg: 'assets/svg/win.svg',
+                    title: 'Certificate',
+                    onTap: () {},
+                  ),
+                  _buildMenuItem(
+                    icon: IconlyLight.activity,
+                    title: 'History Transaction',
+                    onTap: () {},
+                  ),
+                  _buildMenuItem(
+                    icon: Icons.abc,
+                    svg: 'assets/svg/faq.svg',
+                    title: 'FAQ',
+                    onTap: () {},
+                  ),
+                  _buildMenuItem(
+                    icon: IconlyLight.paperNegative,
+                    title: 'Terms & Conditions',
+                    onTap: () {},
+                  ),
+                  _buildMenuItem(
+                    icon: IconlyLight.star,
+                    title: 'Rating App or Give Input',
+                    onTap: () {},
+                  ),
+                  _buildMenuItem(
+                    icon: IconlyLight.message,
+                    svg: 'assets/svg/wa.svg',
+                    title: 'Help Center',
+                    onTap: () {},
+                  ),
+                ]),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 18),
+                child: const Divider(
+                  height: 0,
+                  color: Color(0xFFACACAC),
+                ),
+              ),
+              const SizedBox(height: 12),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 22),
+                child: _buildMenuItem(
+                  icon: IconlyLight.logout,
+                  svg: 'assets/svg/logout.svg',
+                  title: 'Log Out',
+                  textColor: AppColors.greyPrimary,
+                  onTap: () {
+                    controller.loginController.logout();
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
-  // Body widget
-  Widget _buildBody(BuildContext context) {
-    return SingleChildScrollView(
+  Widget _buildMenuItem({
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+    Color? textColor,
+    String? svg,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.all(AppSizes.defaultSpace).copyWith(top: 100),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        padding: const EdgeInsets.only(bottom: 12),
+        child: Row(
           children: [
-            // Profil
-            _buildProfileSection(context),
-            const SizedBox(height: AppSizes.spaceBtwSections),
-            // Pengaturan
-            _buildSettingsSection(context),
-            const SizedBox(height: AppSizes.spaceBtwSections),
-            // Logout
-            _buildLogoutButton(),
+            svg != null
+                ? Icon(
+                    icon,
+                    size: 24,
+                    color: Colors.black,
+                  )
+                : Icon(
+                    icon,
+                    size: 24,
+                    color: Colors.black,
+                  ),
+            const SizedBox(width: 10),
+            Text(
+              title,
+              style: AppTextStyles.footnoteRegular.copyWith(
+                color: textColor ?? AppColors.black,
+              ),
+            ),
           ],
         ),
-      ),
-    );
-  }
-
-  // Profile section
-  Widget _buildProfileSection(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          CircleAvatar(
-            radius: 50,
-            backgroundImage: NetworkImage(
-                _loginController.currentUser.value?.photoURL ??
-                    'https://cdn-icons-png.flaticon.com/512/149/149071.png'),
-          ),
-          const SizedBox(height: AppSizes.spaceBtwItems),
-          Text(
-            _loginController.currentUser.value?.displayName ?? 'User',
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          Text(
-            _loginController.currentUser.value?.email ?? 'user',
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(color: Colors.grey),
-          ),
-          const SizedBox(height: AppSizes.spaceBtwItems),
-          SizedBox(
-            width: 150,
-            child: OutlinedButton(
-              onPressed: () {},
-              child: const Text('Edit Profil'),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Settings section
-  Widget _buildSettingsSection(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Pengaturan',
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        const SizedBox(height: AppSizes.spaceBtwItems),
-        _buildLanguageTile(context),
-        _buildDarkModeTile(context),
-        _buildNotificationTile(context),
-      ],
-    );
-  }
-
-  // Language selection tile
-  Widget _buildLanguageTile(BuildContext context) {
-    return ListTile(
-      leading: const Icon(Iconsax.language_square),
-      title: const Text('Bahasa'),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(_selectedLanguage),
-          const SizedBox(width: AppSizes.sm),
-          const Icon(Iconsax.arrow_right_3),
-        ],
-      ),
-      onTap: _selectLanguage,
-    );
-  }
-
-  // Dark mode toggle tile
-  Widget _buildDarkModeTile(BuildContext context) {
-    // Menggunakan GetX untuk mendeteksi tema saat ini
-    final isDarkMode = Get.isDarkMode;
-
-    return ListTile(
-      leading: const Icon(Iconsax.moon),
-      title: const Text('Mode Gelap'),
-      trailing: Switch(
-        value: isDarkMode,
-        onChanged: _toggleTheme,
-        activeColor: AppTheme.primaryDark,
-      ),
-    );
-  }
-
-  // Notification settings tile
-  Widget _buildNotificationTile(BuildContext context) {
-    return ListTile(
-      leading: const Icon(Iconsax.notification),
-      title: const Text('Notifikasi'),
-      trailing: const Icon(Iconsax.arrow_right_3),
-      onTap: () {},
-    );
-  }
-
-  // Logout button
-  Widget _buildLogoutButton() {
-    return SizedBox(
-      width: double.infinity,
-      child: OutlinedButton(
-        onPressed: _logout,
-        style: OutlinedButton.styleFrom(
-          side: const BorderSide(color: Colors.red),
-        ),
-        child: const Text(
-          'Logout',
-          style: TextStyle(color: Colors.red),
-        ),
-      ),
-    );
-  }
-
-  // Pilih bahasa method
-  Future<void> _selectLanguage() async {
-    final languages = ['Bahasa Indonesia', 'English', 'Español'];
-    final result = await showDialog<String>(
-      context: context,
-      builder: (BuildContext context) {
-        return SimpleDialog(
-          title: const Text('Pilih Bahasa'),
-          children: languages.map((language) {
-            return SimpleDialogOption(
-              onPressed: () {
-                Navigator.pop(context, language);
-              },
-              child: Text(language),
-            );
-          }).toList(),
-        );
-      },
-    );
-
-    if (result != null) {
-      setState(() {
-        _selectedLanguage = result;
-      });
-    }
-  }
-
-  // Toggle theme method - menggunakan GetX untuk mengubah tema
-  void _toggleTheme(bool value) {
-    // Mengubah tema menggunakan GetX
-    Get.changeThemeMode(value ? ThemeMode.dark : ThemeMode.light);
-
-    // Tidak perlu menyimpan state karena GetX menghandle tema
-    setState(() {
-      // Dipanggil hanya untuk memperbarui UI
-    });
-  }
-
-  // Logout method
-  void _logout() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Konfirmasi Logout'),
-        content: const Text('Apakah Anda yakin ingin logout?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Batal'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              _loginController.logout();
-              print('User logged out');
-            },
-            child: const Text('Logout', style: TextStyle(color: Colors.red)),
-          ),
-        ],
       ),
     );
   }

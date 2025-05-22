@@ -1,7 +1,9 @@
+import 'package:attendance_flutter/app/modules/dashboard/controllers/dashboard_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class DashboardView extends StatelessWidget {
+class DashboardView extends GetView<DashboardController> {
   const DashboardView({Key? key}) : super(key: key);
 
   @override
@@ -275,12 +277,21 @@ class DashboardView extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 12),
-        _buildActivityItem(
-          icon: Icons.login,
-          title: 'Check In',
-          date: 'April 17, 2023',
-          time: '10:00 am',
-          status: 'On Time',
+        ListView.separated(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            final attendance = controller.attendances[index];
+            return _buildActivityItem(
+              icon: Icons.login,
+              title: 'Check In',
+              date: attendance.checkIn.toString(),
+              time: attendance.latitude.toString(),
+              status: 'On Time',
+            );
+          },
+          separatorBuilder: (context, index) => const SizedBox(height: 12),
+          itemCount: controller.attendances.length,
         ),
         const SizedBox(height: 12),
         _buildActivityItem(
@@ -371,30 +382,33 @@ class DashboardView extends StatelessWidget {
   }
 
   Widget _buildCheckInButton() {
-    return Container(
-      width: double.infinity,
-      height: 56,
-      decoration: BoxDecoration(
-        color: Colors.blue,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          Icon(
-            Icons.arrow_forward,
-            color: Colors.white,
-          ),
-          SizedBox(width: 8),
-          Text(
-            'Swipe to Check In',
-            style: TextStyle(
+    return GestureDetector(
+      onTap: controller.checkIn,
+      child: Container(
+        width: double.infinity,
+        height: 56,
+        decoration: BoxDecoration(
+          color: Colors.blue,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Icon(
+              Icons.arrow_forward,
               color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
             ),
-          ),
-        ],
+            SizedBox(width: 8),
+            Text(
+              'Swipe to Check In',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

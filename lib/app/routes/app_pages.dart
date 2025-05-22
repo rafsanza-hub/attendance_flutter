@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/LeaveRequest/bindings/leave_request_binding.dart';
+import '../modules/LeaveRequest/views/leave_request_view.dart';
 import '../modules/attendance/bindings/attendance_binding.dart';
 import '../modules/attendance/views/attendance_view.dart';
 import '../modules/dashboard/bindings/dashboard_binding.dart';
@@ -52,6 +54,11 @@ class AppPages {
       name: _Paths.DASHBOARD,
       page: () => const DashboardView(),
       binding: DashboardBinding(),
+    ),
+    GetPage(
+      name: _Paths.LEAVE_REQUEST,
+      page: () => const LeaveRequestView(),
+      binding: LeaveRequestBinding(),
     ),
   ];
 }

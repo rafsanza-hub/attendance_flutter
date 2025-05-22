@@ -41,7 +41,7 @@ class LoginController extends GetxController {
     }
   }
 
-  logout() async {
+  Future<void> logout() async {
     try {
       await auth.signOut();
       Get.offAllNamed(Routes.LOGIN);
