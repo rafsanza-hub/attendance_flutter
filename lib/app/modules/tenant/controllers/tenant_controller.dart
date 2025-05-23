@@ -1,10 +1,10 @@
+import 'package:attendance_flutter/app/data/models/tenant_model.dart';
 import 'package:attendance_flutter/app/data/services/login_service.dart';
 import 'package:attendance_flutter/app/data/services/tenant_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class TenantController extends GetxController {
-  final AuthService _authService = Get.find();
   final TenantService _tenantService = Get.find();
   final nameController = TextEditingController();
   final adminEmailController = TextEditingController();
@@ -16,10 +16,6 @@ class TenantController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
-    if (!_authService.isSuperAdmin()) {
-      // Get.offNamed('/login');
-    }
   }
 
   Future<void> createTenant() async {

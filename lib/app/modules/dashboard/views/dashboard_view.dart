@@ -128,66 +128,69 @@ class DashboardView extends GetView<DashboardController> {
   }
 
   Widget _buildTodayAttendance() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Today Attendance',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
+    return Obx(() {
+      final workingHours = controller.workingHours.value;
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Today Attendance',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        const SizedBox(height: 12),
-        Row(
-          children: [
-            Expanded(
-              child: _buildAttendanceCard(
-                icon: Icons.login,
-                iconColor: Colors.blue,
-                title: 'Check In',
-                time: '10:20 am',
-                status: 'On Time',
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: _buildAttendanceCard(
+                  icon: Icons.login,
+                  iconColor: Colors.blue,
+                  title: 'Check In',
+                  time: workingHours?.startTime ?? '00:00',
+                  status: 'On Time',
+                ),
               ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _buildAttendanceCard(
-                icon: Icons.logout,
-                iconColor: Colors.blue,
-                title: 'Check Out',
-                time: '07:00 pm',
-                status: 'Go Home',
+              const SizedBox(width: 12),
+              Expanded(
+                child: _buildAttendanceCard(
+                  icon: Icons.logout,
+                  iconColor: Colors.blue,
+                  title: 'Check Out',
+                  time: workingHours?.endTime ?? '00:00',
+                  status: 'Go Home',
+                ),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        Row(
-          children: [
-            Expanded(
-              child: _buildAttendanceCard(
-                icon: Icons.coffee,
-                iconColor: Colors.blue,
-                title: 'Break Time',
-                time: '00:30 min',
-                status: 'Avg Time 30 min',
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: _buildAttendanceCard(
+                  icon: Icons.coffee,
+                  iconColor: Colors.blue,
+                  title: 'Break Time',
+                  time: '00:30 min',
+                  status: 'Avg Time 30 min',
+                ),
               ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _buildAttendanceCard(
-                icon: Icons.calendar_today,
-                iconColor: Colors.blue,
-                title: 'Total Days',
-                time: '28',
-                status: 'Working Days',
+              const SizedBox(width: 12),
+              Expanded(
+                child: _buildAttendanceCard(
+                  icon: Icons.calendar_today,
+                  iconColor: Colors.blue,
+                  title: 'Total Days',
+                  time: '28',
+                  status: 'Working Days',
+                ),
               ),
-            ),
-          ],
-        ),
-      ],
-    );
+            ],
+          ),
+        ],
+      );
+    });
   }
 
   Widget _buildAttendanceCard({

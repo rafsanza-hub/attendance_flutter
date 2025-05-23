@@ -29,6 +29,12 @@ class AuthService extends GetxService {
     );
   }
 
+  Future<void> waitUntilUserLoaded() async {
+    while (currentUser.value == null) {
+      await Future.delayed(Duration(milliseconds: 50));
+    }
+  }
+
   Future<void> signIn(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);

@@ -32,15 +32,17 @@ class LoginController extends GetxController {
           Get.offNamed('/main');
         } else {
           await _authService.signOut();
-          Get.snackbar('Error', 'Belum terdaftar, Mohon hubungi layanan bantuan.');
+          Get.snackbar(
+              'Error', 'Belum terdaftar, Mohon hubungi layanan bantuan.');
         }
       } else {
         final tenantId = _authService.getTenantId();
-        if (tenantId != null && await _tenantService.tenantExists(tenantId)) {
+        if (tenantId != null) {
           Get.offNamed('/main');
         } else {
           await _authService.signOut();
-          Get.snackbar('Error', 'Belum terdaftar, Mohon hubungi layanan bantuan.');
+          Get.snackbar(
+              'Error', 'Belum terdaftar, Mohon hubungi layanan bantuan.');
         }
       }
     } on FirebaseAuthException catch (e) {

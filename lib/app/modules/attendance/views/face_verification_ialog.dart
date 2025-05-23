@@ -31,7 +31,7 @@ class _FaceVerificationDialogState extends State<FaceVerificationDialog> {
         _cameraController =
             CameraController(frontCamera, ResolutionPreset.medium);
         await _cameraController!.initialize();
-        setState(() {});
+        // setState(() {});
       } else {
         // Tidak ada kamera di device
         Get.snackbar('Error', 'No cameras found');
