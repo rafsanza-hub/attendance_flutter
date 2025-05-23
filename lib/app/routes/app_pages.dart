@@ -14,6 +14,8 @@ import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
+import '../modules/tenant/bindings/tenant_binding.dart';
+import '../modules/tenant/views/tenant_view.dart';
 
 part 'app_routes.dart';
 
@@ -59,6 +61,11 @@ class AppPages {
       name: _Paths.LEAVE_REQUEST,
       page: () => const LeaveRequestView(),
       binding: LeaveRequestBinding(),
+    ),
+    GetPage(
+      name: _Paths.TENANT,
+      page: () => const TenantView(),
+      binding: TenantBinding(),
     ),
   ];
 }

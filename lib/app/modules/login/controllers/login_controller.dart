@@ -1,9 +1,13 @@
+import 'package:attendance_flutter/app/data/services/login_service.dart';
+import 'package:attendance_flutter/app/data/services/tenant_services.dart';
 import 'package:attendance_flutter/app/routes/app_pages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
+  final AuthService _authService = Get.find();
+  final TenantService _tenantService = Get.find();
   final emailC = TextEditingController();
   final passwordC = TextEditingController();
 
@@ -12,17 +16,32 @@ class LoginController extends GetxController {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final currentUser = FirebaseAuth.instance.currentUser.obs;
 
-  login(String email, String password) async {
+  login() async {
     isLoading.value = true;
     try {
-      final UserCredential = await auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      if (UserCredential.user!.emailVerified) {
-        Get.offAllNamed(Routes.MAIN);
+      await _authService.signIn(emailC.text, passwordC.text);
+      // Jika superadmin
+      if (_authService.isSuperAdmin()) {
+        Get.offNamed('/tenant');
+
+        // Jika admin
+      } else if (_authService.isAdmin()) {
+        final tenantId = _authService.getTenantId();
+        print('tenantId: $tenantId');
+        if (tenantId != null) {
+          Get.offNamed('/main');
+        } else {
+          await _authService.signOut();
+          Get.snackbar('Error', 'Belum terdaftar, Mohon hubungi layanan bantuan.');
+        }
       } else {
-        throw FirebaseAuthException(code: 'email-not-verified');
+        final tenantId = _authService.getTenantId();
+        if (tenantId != null && await _tenantService.tenantExists(tenantId)) {
+          Get.offNamed('/main');
+        } else {
+          await _authService.signOut();
+          Get.snackbar('Error', 'Belum terdaftar, Mohon hubungi layanan bantuan.');
+        }
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -43,8 +62,8 @@ class LoginController extends GetxController {
 
   Future<void> logout() async {
     try {
-      await auth.signOut();
       Get.offAllNamed(Routes.LOGIN);
+      await auth.signOut();
     } catch (e) {
       Get.snackbar('Error', e.toString());
     }

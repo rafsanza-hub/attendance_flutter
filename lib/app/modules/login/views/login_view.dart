@@ -66,8 +66,7 @@ class LoginView extends GetView<LoginController> {
                       child: ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            controller.login(controller.emailC.text,
-                                controller.passwordC.text);
+                            controller.login();
                           }
                         },
                         child: const Text('Login'),
