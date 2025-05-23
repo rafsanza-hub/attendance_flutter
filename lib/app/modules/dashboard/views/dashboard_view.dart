@@ -281,7 +281,8 @@ class DashboardView extends GetView<DashboardController> {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
-            final attendance = controller.attendances[index];
+            final attendance =
+                controller.attendanceController.attendances[index];
             return _buildActivityItem(
               icon: Icons.login,
               title: 'Check In',
@@ -291,7 +292,7 @@ class DashboardView extends GetView<DashboardController> {
             );
           },
           separatorBuilder: (context, index) => const SizedBox(height: 12),
-          itemCount: controller.attendances.length,
+          itemCount: controller.attendanceController.attendances.length,
         ),
         const SizedBox(height: 12),
         _buildActivityItem(
@@ -383,7 +384,7 @@ class DashboardView extends GetView<DashboardController> {
 
   Widget _buildCheckInButton() {
     return GestureDetector(
-      onTap: controller.checkIn,
+      onTap: controller.attendanceController.checkIn,
       child: Container(
         width: double.infinity,
         height: 56,
