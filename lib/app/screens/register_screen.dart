@@ -1,5 +1,6 @@
 import 'package:attendance_flutter/app/core/constants/app_colors.dart';
 import 'package:attendance_flutter/app/core/constants/app_text_styles.dart';
+import 'package:attendance_flutter/app/screens/profile_screen.dart';
 import 'package:attendance_flutter/app/widgets/app_elevated_button.dart';
 import 'package:attendance_flutter/app/widgets/app_text_field.dart';
 import 'package:flutter/gestures.dart';
@@ -78,7 +79,7 @@ class RegisterScreen extends StatelessWidget {
                   AppElevatedButton(
                     label: 'Sign Up',
                     onPressed: () {
-                      // Get.to();
+                      Get.to(ProfileScreen());
                     },
                   ),
                   SizedBox(height: 73),
