@@ -23,7 +23,7 @@ class ProfileView extends GetView<ProfileController> {
               const SizedBox(height: 16),
               Text(
                 'Profile',
-                style: AppTextStyles.headlineBold,
+                style: AppTextStyles.headlineMedium,
               ),
               const SizedBox(height: 28),
               Container(
@@ -47,13 +47,13 @@ class ProfileView extends GetView<ProfileController> {
               const SizedBox(height: 12),
               Text(
                 'Rafsan Zaini',
-                style: AppTextStyles.subheadlineBold,
+                style: AppTextStyles.bodySmall,
               ),
               const SizedBox(height: 2),
               Text(
                 'rapsanza@gmail.com',
-                style: AppTextStyles.caption1Regular.copyWith(
-                  color: AppColors.greyText,
+                style: AppTextStyles.bodyLarge.copyWith(
+                  color: AppColors.gray100,
                 ),
               ),
               const SizedBox(height: 12),
@@ -81,7 +81,7 @@ class ProfileView extends GetView<ProfileController> {
               // ),
               AppChip('Edit Profile',
                   isSelected: true,
-                  shadowColor: AppColors.primary.withOpacity(0.5)),
+                  shadowColor: AppColors.purple500.withOpacity(0.5)),
               const SizedBox(height: 17),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 22),
@@ -89,7 +89,7 @@ class ProfileView extends GetView<ProfileController> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      border: Border.all(color: AppColors.greySecondary),
+                      border: Border.all(color: AppColors.gray100),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Row(
@@ -105,13 +105,13 @@ class ProfileView extends GetView<ProfileController> {
                             children: [
                               Text(
                                 'Your personal information is complete',
-                                style: AppTextStyles.footnoteBold,
+                                style: AppTextStyles.bodyLarge,
                               ),
                               const SizedBox(height: 2),
                               Text(
                                 'Thank you for filling in your personal information for course administration purposes.',
-                                style: AppTextStyles.caption2Regular.copyWith(
-                                  color: AppColors.greyText,
+                                style: AppTextStyles.bodyLarge.copyWith(
+                                  color: AppColors.gray200,
                                 ),
                               ),
                             ],
@@ -170,7 +170,7 @@ class ProfileView extends GetView<ProfileController> {
                   icon: IconlyLight.logout,
                   svg: 'assets/svg/logout.svg',
                   title: 'Log Out',
-                  textColor: AppColors.greyPrimary,
+                  textColor: AppColors.gray100,
                   onTap: controller.loginController.logout,
                 ),
               ),
@@ -208,7 +208,7 @@ class ProfileView extends GetView<ProfileController> {
             const SizedBox(width: 10),
             Text(
               title,
-              style: AppTextStyles.footnoteRegular.copyWith(
+              style: AppTextStyles.bodyLarge.copyWith(
                 color: textColor ?? AppColors.black,
               ),
             ),

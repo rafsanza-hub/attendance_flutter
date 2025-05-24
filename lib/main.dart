@@ -1,5 +1,7 @@
 import 'package:attendance_flutter/app/bindings/initial_binding.dart';
 import 'package:attendance_flutter/app/core/theme/modern_theme.dart';
+import 'package:attendance_flutter/app/core/theme/theme.dart';
+import 'package:attendance_flutter/app/screens/onboarding_screen.dart';
 import 'package:attendance_flutter/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -18,11 +20,10 @@ void main() async {
   runApp(
     GetMaterialApp(
       title: "Application",
-      theme: ModernTheme.light(),
-      darkTheme: ModernTheme.dark(),
       initialBinding: InitialBinding(),
-      initialRoute: user != null ? Routes.MAIN : AppPages.INITIAL,
-      getPages: AppPages.routes,
+      // initialRoute: user != null ? Routes.MAIN : AppPages.INITIAL,
+      // getPages: AppPages.routes,
+      home: OnboardingScreen(),
     ),
   );
 }

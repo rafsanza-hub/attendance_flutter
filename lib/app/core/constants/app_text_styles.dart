@@ -8,14 +8,14 @@ class AppTextStyles {
     height: 64 / 57,
     letterSpacing: -0.25,
   );
-  
+
   static const TextStyle displayMedium = TextStyle(
     fontFamily: 'Inter',
     fontSize: 45,
     height: 52 / 45,
     letterSpacing: 0,
   );
-  
+
   static const TextStyle displaySmall = TextStyle(
     fontFamily: 'Inter',
     fontSize: 36,
@@ -30,16 +30,17 @@ class AppTextStyles {
     height: 40 / 32,
     letterSpacing: 0,
   );
-  
+
   static const TextStyle headlineMedium = TextStyle(
     fontFamily: 'Inter',
     fontSize: 28,
     height: 36 / 28,
     letterSpacing: 0,
   );
-  
+
   static const TextStyle headlineSmall = TextStyle(
     fontFamily: 'Inter',
+    fontWeight: FontWeight.bold,
     fontSize: 24,
     height: 32 / 24,
     letterSpacing: 0,
@@ -53,7 +54,7 @@ class AppTextStyles {
     height: 28 / 22,
     letterSpacing: 0,
   );
-  
+
   static const TextStyle titleMedium = TextStyle(
     fontFamily: 'Inter',
     fontWeight: FontWeight.w500, // Medium
@@ -61,7 +62,7 @@ class AppTextStyles {
     height: 24 / 16,
     letterSpacing: 0.15,
   );
-  
+
   static const TextStyle titleSmall = TextStyle(
     fontFamily: 'Inter',
     fontWeight: FontWeight.w500, // Medium
@@ -78,7 +79,7 @@ class AppTextStyles {
     height: 20 / 14,
     letterSpacing: 0.1,
   );
-  
+
   static const TextStyle labelMedium = TextStyle(
     fontFamily: 'Inter',
     fontWeight: FontWeight.w500, // Medium
@@ -86,7 +87,7 @@ class AppTextStyles {
     height: 16 / 12,
     letterSpacing: -0.5,
   );
-  
+
   static const TextStyle labelSmall = TextStyle(
     fontFamily: 'Inter',
     fontWeight: FontWeight.w500, // Medium
@@ -102,14 +103,14 @@ class AppTextStyles {
     height: 24 / 16,
     letterSpacing: 0.5,
   );
-  
+
   static const TextStyle bodyMedium = TextStyle(
     fontFamily: 'Inter',
     fontSize: 14,
     height: 20 / 14,
     letterSpacing: 0.25,
   );
-  
+
   static const TextStyle bodySmall = TextStyle(
     fontFamily: 'Inter',
     fontSize: 12,
