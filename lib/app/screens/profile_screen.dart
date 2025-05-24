@@ -1,5 +1,6 @@
 import 'package:attendance_flutter/app/core/constants/app_colors.dart';
 import 'package:attendance_flutter/app/core/constants/app_text_styles.dart';
+import 'package:attendance_flutter/app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
@@ -136,7 +137,7 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   InkWell(
                     radius: 30,
-                    onTap: () => Get.back(),
+                    onTap: () => Get.to(HomeScreen()),
                     child: Container(
                       height: 32,
                       width: 32,
