@@ -20,6 +20,7 @@ class AppElevatedButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(vertical: 14),
         backgroundColor: backgroundColor,
         minimumSize: const Size(double.infinity, 50),
         elevation: 0,
