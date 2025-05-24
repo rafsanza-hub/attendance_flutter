@@ -1,4 +1,4 @@
-import 'package:attendance_flutter/core/constants/app_colors.dart';
+import 'package:attendance_flutter/app/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppChip extends StatelessWidget {

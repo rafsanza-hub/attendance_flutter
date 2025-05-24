@@ -1,5 +1,5 @@
 import 'package:attendance_flutter/app/bindings/initial_binding.dart';
-import 'package:attendance_flutter/core/theme/modern_theme.dart';
+import 'package:attendance_flutter/app/core/theme/modern_theme.dart';
 import 'package:attendance_flutter/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';

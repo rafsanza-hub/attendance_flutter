@@ -2,8 +2,8 @@ import 'package:attendance_flutter/app/data/models/app_chip.dart';
 import 'package:attendance_flutter/app/modules/login/views/login_view.dart';
 import 'package:attendance_flutter/app/modules/profile/controllers/profile_controller.dart';
 import 'package:attendance_flutter/app/routes/app_pages.dart';
-import 'package:attendance_flutter/core/constants/app_colors.dart';
-import 'package:attendance_flutter/core/constants/app_text_styles.dart';
+import 'package:attendance_flutter/app/core/constants/app_colors.dart';
+import 'package:attendance_flutter/app/core/constants/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 
