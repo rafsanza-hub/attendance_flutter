@@ -49,7 +49,7 @@ class AppTextStyles {
   // Title
   static const TextStyle titleLarge = TextStyle(
     fontFamily: 'Inter',
-    fontWeight: FontWeight.normal,
+    fontWeight: FontWeight.w600,
     fontSize: 22,
     height: 28 / 22,
     letterSpacing: 0,
