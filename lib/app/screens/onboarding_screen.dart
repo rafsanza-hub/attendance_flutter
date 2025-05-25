@@ -66,7 +66,7 @@ class OnboardingScreen extends GetView<OnboardingController> {
                   SizedBox(height: 35),
                   ElevatedButton(
                     onPressed: () {
-                      Get.to(LoginScreen());
+                      LoginBottomSheet.show(context);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.purple500,
