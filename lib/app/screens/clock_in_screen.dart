@@ -1,5 +1,6 @@
 import 'package:attendance_flutter/app/core/constants/app_colors.dart';
 import 'package:attendance_flutter/app/core/constants/app_text_styles.dart';
+import 'package:attendance_flutter/app/screens/selfie_screen.dart';
 import 'package:attendance_flutter/app/widgets/app_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -335,7 +336,9 @@ class ClockInScreen extends StatelessWidget {
                           bottom: MediaQuery.of(context).padding.bottom + 14),
                   child: AppElevatedButton(
                     label: 'Selfie To Clock In',
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(() => SelfieScreen());
+                    },
                     backgroundColor: AppColors.purple500,
                   ),
                 ),

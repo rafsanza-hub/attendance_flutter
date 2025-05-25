@@ -2,6 +2,7 @@ import 'package:attendance_flutter/app/screens/attendance_screen.dart';
 import 'package:attendance_flutter/app/screens/home_screen.dart';
 import 'package:attendance_flutter/app/screens/leave_screen.dart';
 import 'package:attendance_flutter/app/screens/profile_screen.dart';
+import 'package:attendance_flutter/app/screens/selfie_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
@@ -54,6 +55,7 @@ class MainController extends GetxController {
   void onInit() {
     super.onInit();
     Get.put(LeaveController());
+    Get.lazyPut<SelfieController>(() => SelfieController());
   }
 
   void changeIndex(int index) {
