@@ -1,5 +1,7 @@
+import 'package:attendance_flutter/app/screens/clock_in_screen.dart';
 import 'package:attendance_flutter/app/widgets/app_elevated_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 import 'package:attendance_flutter/app/core/constants/app_colors.dart';
@@ -209,7 +211,9 @@ class AttendanceScreen extends StatelessWidget {
                         // Clock In Button
                         AppElevatedButton(
                           label: 'Clock In',
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.to(ClockInScreen());
+                          },
                         ),
                       ],
                     ),
