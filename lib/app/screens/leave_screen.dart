@@ -1,3 +1,4 @@
+import 'package:attendance_flutter/app/screens/leave_form_screen.dart';
 import 'package:attendance_flutter/app/widgets/app_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -315,7 +316,11 @@ class LeaveScreen extends GetView<LeaveController> {
               left: 12,
               right: 12,
               bottom: 16,
-              child: AppElevatedButton(label: 'Submit Leave', onPressed: () {}),
+              child: AppElevatedButton(
+                  label: 'Submit Leave',
+                  onPressed: () {
+                    Get.to(LeaveFormScreen());
+                  }),
             ),
           ],
         ),

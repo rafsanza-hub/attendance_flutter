@@ -13,6 +13,8 @@ class AppTextFormField extends StatelessWidget {
   final String? hintText;
   final String? Function(String?)? validator;
   final Function()? onSuffixIconPressed;
+  final Function()? onTap;
+  final bool readOnly;
 
   const AppTextFormField({
     Key? key,
@@ -24,6 +26,8 @@ class AppTextFormField extends StatelessWidget {
     this.hintText,
     this.validator,
     this.onSuffixIconPressed,
+    this.onTap,
+    this.readOnly = false,
   }) : super(key: key);
 
   @override
@@ -37,11 +41,14 @@ class AppTextFormField extends StatelessWidget {
         ),
         SizedBox(height: 4),
         TextFormField(
+          readOnly: readOnly,
           controller: controller,
           obscureText: obscureText,
           style: AppTextStyles.bodyMedium,
           cursorHeight: 20,
+          onTap: onTap,
           decoration: InputDecoration(
+            
               suffixIcon: suffixIcon != null
                   ? IconButton(
                       onPressed: onSuffixIconPressed,

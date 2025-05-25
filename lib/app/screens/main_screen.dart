@@ -1,5 +1,6 @@
 import 'package:attendance_flutter/app/screens/attendance_screen.dart';
 import 'package:attendance_flutter/app/screens/home_screen.dart';
+import 'package:attendance_flutter/app/screens/leave_form_screen.dart';
 import 'package:attendance_flutter/app/screens/leave_screen.dart';
 import 'package:attendance_flutter/app/screens/profile_screen.dart';
 import 'package:attendance_flutter/app/screens/selfie_screen.dart';
@@ -56,6 +57,7 @@ class MainController extends GetxController {
     super.onInit();
     Get.put(LeaveController());
     Get.lazyPut<SelfieController>(() => SelfieController());
+    Get.lazyPut<LeaveFormController>(() => LeaveFormController());
   }
 
   void changeIndex(int index) {
