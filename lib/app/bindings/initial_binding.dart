@@ -3,6 +3,7 @@ import 'package:attendance_flutter/app/data/services/login_service.dart';
 import 'package:attendance_flutter/app/data/services/setting_services.dart';
 import 'package:attendance_flutter/app/data/services/tenant_services.dart';
 import 'package:attendance_flutter/app/modules/attendance/bindings/attendance_binding.dart';
+import 'package:attendance_flutter/app/screens/main_screen.dart';
 import 'package:attendance_flutter/app/screens/onboarding_screen.dart';
 import 'package:get/get.dart';
 
@@ -14,6 +15,6 @@ class InitialBinding extends Bindings {
     Get.lazyPut<AttendanceService>(() => AttendanceService());
     Get.lazyPut<SettingServices>(() => SettingServices());
     Get.lazyPut<OnboardingController>(() => OnboardingController());
-
+    Get.lazyPut<MainController>(() => MainController());
   }
 }

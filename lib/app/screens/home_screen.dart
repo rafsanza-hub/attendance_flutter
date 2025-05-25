@@ -55,7 +55,7 @@ class HomeScreen extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                'Tonald Drump',
+                                'Rafsan Zaini Anwar',
                                 style: AppTextStyles.titleMedium.copyWith(
                                   color: AppColors.gray900,
                                 ),
