@@ -2,8 +2,10 @@ import 'package:attendance_flutter/app/core/constants/app_colors.dart';
 import 'package:attendance_flutter/app/core/constants/app_text_styles.dart';
 import 'package:attendance_flutter/app/widgets/app_elevated_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:latlong2/latlong.dart';
 
 class ClockInScreen extends StatelessWidget {
   const ClockInScreen({super.key});
@@ -16,6 +18,37 @@ class ClockInScreen extends StatelessWidget {
         width: double.infinity,
         child: Stack(
           children: [
+            Positioned(
+              child: SizedBox(
+                height: 600,
+                child: FlutterMap(
+                    options: MapOptions(
+                      initialCenter: LatLng(-6.956060, 108.452004),
+                      initialZoom: 19,
+                    ),
+                    children: [
+                      TileLayer(
+                        urlTemplate:
+                            'https://tile.openstreetmap.org/{z}/{x}/{y}.png', // For demonstration only
+                        userAgentPackageName: 'com.example.app',
+                      ),
+                      MarkerLayer(markers: [
+                        Marker(
+                          width: 200.0,
+                          height: 200.0,
+                          point: LatLng(-6.956060, 108.452004),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColors.purple500.withOpacity(0.2),
+                              border: Border.all(color: AppColors.purple500),
+                            ),
+                          ),
+                        )
+                      ])
+                    ]),
+              ),
+            ),
             Positioned(
               bottom: 79 + MediaQuery.of(context).padding.bottom,
               left: 0,
