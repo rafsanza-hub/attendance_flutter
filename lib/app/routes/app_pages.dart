@@ -10,6 +10,8 @@ import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/main/bindings/main_binding.dart';
 import '../modules/main/views/main_view.dart';
+import '../modules/onboarding/bindings/onboarding_binding.dart';
+import '../modules/onboarding/views/onboarding_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 import '../modules/register/bindings/register_binding.dart';
@@ -44,7 +46,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.REGISTER,
-      page: () => RegisterView(),
+      page: () => const RegisterView(),
       binding: RegisterBinding(),
     ),
     GetPage(
@@ -66,6 +68,11 @@ class AppPages {
       name: _Paths.TENANT,
       page: () => const TenantView(),
       binding: TenantBinding(),
+    ),
+    GetPage(
+      name: _Paths.ONBOARDING,
+      page: () => const OnboardingView(),
+      binding: OnboardingBinding(),
     ),
   ];
 }

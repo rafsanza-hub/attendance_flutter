@@ -10,7 +10,7 @@ class LoginController extends GetxController {
   final TenantService _tenantService = Get.find();
   final emailC = TextEditingController();
   final passwordC = TextEditingController();
-
+  final formKey = GlobalKey<FormState>();
   final isLoading = false.obs;
 
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -18,6 +18,7 @@ class LoginController extends GetxController {
 
   login() async {
     isLoading.value = true;
+    if (!formKey.currentState!.validate()) return;
     try {
       await _authService.signIn(emailC.text, passwordC.text);
       // Jika superadmin
@@ -70,4 +71,31 @@ class LoginController extends GetxController {
       Get.snackbar('Error', e.toString());
     }
   }
+
+  String? emailValidator(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Email tidak boleh kosong';
+    }
+    if (!GetUtils.isEmail(value)) {
+      return 'Email tidak valid';
+    }
+    return null;
+  }
+
+  String? passwordValidator(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Password tidak boleh kosong';
+    }
+    if (value.length < 6) {
+      return 'Password harus lebih dari 6 karakter';
+    }
+    return null;
+  }
+
+  // String? confirmPasswordValidator(String value, String password) {
+  //   if (value != password) {
+  //     return 'Password tidak sama';
+  //   }
+  //   return null;
+  // }
 }

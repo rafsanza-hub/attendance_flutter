@@ -11,6 +11,7 @@ abstract class Routes {
   static const DASHBOARD = _Paths.DASHBOARD;
   static const LEAVE_REQUEST = _Paths.LEAVE_REQUEST;
   static const TENANT = _Paths.TENANT;
+  static const ONBOARDING = _Paths.ONBOARDING;
 }
 
 abstract class _Paths {
@@ -23,4 +24,5 @@ abstract class _Paths {
   static const DASHBOARD = '/dashboard';
   static const LEAVE_REQUEST = '/leave-request';
   static const TENANT = '/tenant';
+  static const ONBOARDING = '/onboarding';
 }
