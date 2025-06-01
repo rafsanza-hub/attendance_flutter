@@ -20,6 +20,8 @@ import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
+import '../modules/submit_leave/bindings/submit_leave_binding.dart';
+import '../modules/submit_leave/views/submit_leave_view.dart';
 import '../modules/tenant/bindings/tenant_binding.dart';
 import '../modules/tenant/views/tenant_view.dart';
 
@@ -28,6 +30,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
+  // ignore: constant_identifier_names
   static const INITIAL = Routes.LOGIN;
 
   static final routes = [
@@ -87,6 +90,11 @@ class AppPages {
       name: _Paths.HOME,
       page: () => const HomeView(),
       binding: HomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.SUBMIT_LEAVE,
+      page: () => const SubmitLeaveView(),
+      binding: SubmitLeaveBinding(),
     ),
   ];
 }

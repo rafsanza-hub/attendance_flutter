@@ -1,3 +1,4 @@
+import 'package:attendance_flutter/app/core/logger/logger.dart';
 import 'package:attendance_flutter/app/data/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,10 +9,13 @@ class AuthService extends GetxService {
   final _firestore = FirebaseFirestore.instance;
 
   final Rx<UserModel?> currentUser = Rx<UserModel?>(null);
+  final RxBool isInitialized = RxBool(true);
 
   @override
   void onInit() {
     super.onInit();
+    isInitialized.value = true;
+
     _auth.authStateChanges().listen(
       (user) async {
         if (user != null) {
@@ -25,12 +29,14 @@ class AuthService extends GetxService {
         } else {
           currentUser.value = null;
         }
+        isInitialized.value = false;
       },
     );
   }
 
   Future<void> waitUntilUserLoaded() async {
-    while (currentUser.value == null) {
+    while (isInitialized.value) {
+      AppLogger.instance.d('Waiting for user to be initialized...');
       await Future.delayed(Duration(milliseconds: 50));
     }
   }

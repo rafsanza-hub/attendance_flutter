@@ -11,7 +11,7 @@ import '../controllers/main_controller.dart';
 
 class MainBinding extends Bindings {
   @override
-  void dependencies() {
+  void dependencies() async {
     Get.lazyPut<MainController>(
       () => MainController(),
     );

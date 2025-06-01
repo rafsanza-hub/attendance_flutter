@@ -1,10 +1,8 @@
 import 'package:attendance_flutter/app/modules/main/controllers/main_controller.dart';
 import 'package:attendance_flutter/app/screens/attendance_screen.dart';
 import 'package:attendance_flutter/app/screens/home_screen.dart';
-import 'package:attendance_flutter/app/screens/leave_form_screen.dart';
 import 'package:attendance_flutter/app/screens/leave_screen.dart';
 import 'package:attendance_flutter/app/screens/profile_screen.dart';
-import 'package:attendance_flutter/app/screens/selfie_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';

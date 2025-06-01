@@ -41,7 +41,7 @@ class ClockInScreen extends StatelessWidget {
                           child: Container(
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: AppColors.purple500.withOpacity(0.2),
+                              color: AppColors.purple500.withValues(alpha: 0.2),
                               border: Border.all(color: AppColors.purple500),
                             ),
                           ),
@@ -324,7 +324,7 @@ class ClockInScreen extends StatelessWidget {
                 height: 79 + MediaQuery.of(context).padding.bottom,
                 decoration: BoxDecoration(color: AppColors.white, boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.15),
+                    color: Colors.black..withValues(alpha: 0.15),
                     blurRadius: 10,
                     offset: const Offset(0, 0),
                   ),

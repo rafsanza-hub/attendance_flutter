@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 
 class SettingServices extends GetxService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final AuthService _authService = Get.find<AuthService>();
 
   Future<void> updateWorkingHours(Map<String, dynamic> workingHours) async {
     final tenantId = Get.find<AuthService>().getTenantId();
@@ -23,23 +22,18 @@ class SettingServices extends GetxService {
 
   Future<WorkingHours> getWorkingHours() async {
     try {
-      print('alalal');
      await Get.find<AuthService>().waitUntilUserLoaded();
       final tenantId = Get.find<AuthService>().getTenantId();
-      print('tenantId: $tenantId');
       if (tenantId == null) {
-        print('lalalala');
         throw Exception('Invalid user or tenant');
       }
 
-      print('alalal');
       final doc = await _firestore
           .collection('tenants')
           .doc(tenantId)
           .collection('settings')
           .doc('workingHours')
           .get();
-      print('alala' + doc.data().toString());
       if (!doc.exists) throw Exception('Working hours not set');
       return WorkingHours.fromJson(doc.data()!['value']);
     } catch (e) {

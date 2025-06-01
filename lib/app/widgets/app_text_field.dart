@@ -17,7 +17,7 @@ class AppTextFormField extends StatelessWidget {
   final bool readOnly;
 
   const AppTextFormField({
-    Key? key,
+    super.key,
     required this.labelText,
     this.obscureText = false,
     this.controller,
@@ -28,7 +28,7 @@ class AppTextFormField extends StatelessWidget {
     this.onSuffixIconPressed,
     this.onTap,
     this.readOnly = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

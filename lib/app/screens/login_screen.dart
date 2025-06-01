@@ -166,7 +166,7 @@ class LoginBottomSheet extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      barrierColor: AppColors.purple500.withOpacity(0.1),
+      barrierColor: AppColors.purple500.withValues(alpha: 0.1),
       backgroundColor: Colors.transparent,
       builder: (context) => BackdropFilter(
           filter: ImageFilter.blur(

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class DashboardView extends GetView<DashboardController> {
-  const DashboardView({Key? key}) : super(key: key);
+  const DashboardView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class DashboardView extends GetView<DashboardController> {
             children: [
               CircleAvatar(
                 radius: 20,
-                backgroundImage: NetworkImage('https://via.placeholder.com/40'),
+                // backgroundImage: NetworkImage('https://via.placeholder.com/40'),
               ),
               const SizedBox(width: 12),
               Column(
@@ -214,7 +214,7 @@ class DashboardView extends GetView<DashboardController> {
               Container(
                 padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
-                  color: iconColor.withOpacity(0.1),
+                  color: iconColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(
@@ -330,7 +330,7 @@ class DashboardView extends GetView<DashboardController> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.1),
+                  color: Colors.blue.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(
