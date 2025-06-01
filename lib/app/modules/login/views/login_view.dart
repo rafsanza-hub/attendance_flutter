@@ -1,103 +1,188 @@
+import 'dart:ui';
+
+import 'package:attendance_flutter/app/modules/login/controllers/login_controller.dart';
 import 'package:attendance_flutter/app/routes/app_pages.dart';
+import 'package:attendance_flutter/app/screens/register_screen.dart';
+import 'package:attendance_flutter/app/widgets/app_elevated_button.dart';
+import 'package:attendance_flutter/app/widgets/app_outlined_button.dart';
+import 'package:attendance_flutter/app/widgets/app_text_field.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 
-import '../controllers/login_controller.dart';
+import 'package:attendance_flutter/app/core/constants/app_colors.dart';
+import 'package:attendance_flutter/app/core/constants/app_text_styles.dart';
 
 class LoginView extends GetView<LoginController> {
-  final _formKey = GlobalKey<FormState>();
-  LoginView({super.key});
+  const LoginView({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: AppBar(
-            title: const Text('LoginView'),
-            centerTitle: true,
-          ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: Form(
-                key: _formKey,
-                child: Column(
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
+      decoration: const BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(24),
+          topRight: Radius.circular(24),
+        ),
+      ),
+      child: Form(
+        key: controller.formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 24),
+            Center(
+              child: Text(
+                'Sign In',
+                style: AppTextStyles.headlineSmall,
+              ),
+            ),
+            Center(
+              child: Text(
+                'Sign in to my account',
+                style: AppTextStyles.labelLarge.copyWith(
+                  color: AppColors.gray600,
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+            AppTextFormField(
+              controller: controller.emailC,
+              labelText: 'Email',
+              prefixIcon: Iconsax.sms_copy,
+              hintText: 'Enter your email',
+              validator: controller.emailValidator,
+            ),
+            const SizedBox(height: 12),
+            AppTextFormField(
+              controller: controller.passwordC,
+              labelText: 'Password',
+              prefixIcon: Iconsax.finger_scan_copy,
+              hintText: 'Enter your password',
+              suffixIcon: Iconsax.eye_slash_copy,
+              obscureText: true,
+              validator: controller.passwordValidator,
+            ),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Transform.scale(
+                  scale: 0.8,
+                  child: SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: Checkbox(
+                      value: true,
+                      onChanged: (value) {},
+                      activeColor: AppColors.purple50,
+                      checkColor: AppColors.purple500,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      side: WidgetStateBorderSide.resolveWith(
+                        (states) => BorderSide(
+                          color: AppColors.purple500,
+                          strokeAlign: 1,
+                          width: 1,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'Remember Me',
+                  style: AppTextStyles.bodySmall,
+                ),
+                const Spacer(),
+                Text(
+                  'Forgot Password',
+                  style: AppTextStyles.bodySmall
+                      .copyWith(color: AppColors.purple500),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            AppElevatedButton(
+              label: 'Sign In',
+              onPressed: controller.login,
+            ),
+            const SizedBox(height: 32),
+            Row(
+              children: [
+                const Expanded(child: Divider()),
+                const SizedBox(width: 16),
+                Text(
+                  'OR',
+                  style: AppTextStyles.bodySmall
+                      .copyWith(color: AppColors.gray400),
+                ),
+                const SizedBox(width: 16),
+                const Expanded(child: Divider()),
+              ],
+            ),
+            const SizedBox(height: 32),
+            AppOutlinedButton(
+              label: 'Sign in With Employee ID',
+              icon: Iconsax.user_octagon,
+              onPressed: () {},
+            ),
+            const SizedBox(height: 12),
+            AppOutlinedButton(
+              label: 'Sign in With Fingerprint',
+              icon: Iconsax.finger_scan_copy,
+              onPressed: () {},
+            ),
+            const SizedBox(height: 22),
+            Center(
+              child: RichText(
+                text: TextSpan(
+                  style: AppTextStyles.labelSmall,
                   children: [
-                    TextFormField(
-                      controller: controller.emailC,
-                      decoration: const InputDecoration(
-                        labelText: 'Email',
-                        hintText: 'Enter your email',
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your email';
-                        }
-                        if (!GetUtils.isEmail(value)) {
-                          return 'Please enter a valid email';
-                        }
-                        return null;
-                      },
+                    TextSpan(
+                      text: 'Don\'t have an account? ',
+                      style: AppTextStyles.labelSmall
+                          .copyWith(color: AppColors.gray600),
                     ),
-                    const SizedBox(height: 20),
-                    TextFormField(
-                      controller: controller.passwordC,
-                      decoration: const InputDecoration(
-                        labelText: 'Password',
-                        hintText: 'Enter your password',
-                        border: OutlineInputBorder(),
-                      ),
-                      obscureText: true,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your password';
-                        }
-                        if (value.length < 6) {
-                          return 'Password must be at least 6 characters';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            controller.login();
-                          }
-                        },
-                        child: const Text('Login'),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    SizedBox(
-                      width: double.infinity,
-                      child: OutlinedButton(
-                        onPressed: () {
+                    TextSpan(
+                      text: 'Sign Up Here',
+                      style: AppTextStyles.labelSmall
+                          .copyWith(color: AppColors.purple500),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.pop(context); // Close the bottom sheet
                           Get.toNamed(Routes.REGISTER);
                         },
-                        child: const Text('Register'),
-                      ),
                     ),
                   ],
                 ),
               ),
             ),
-          ),
+            SizedBox(height: MediaQuery.of(context).padding.bottom + 20),
+          ],
         ),
-        Obx(() => controller.isLoading.value
-            ? Container(
-                color: Colors.black.withOpacity(0.5),
-                height: MediaQuery.of(context).size.height,
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              )
-            : const SizedBox()),
-      ],
+      ),
+    );
+  }
+
+  // Helper
+  static void show(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      barrierColor: AppColors.purple500.withOpacity(0.1),
+      backgroundColor: Colors.transparent,
+      builder: (context) => BackdropFilter(
+          filter: ImageFilter.blur(
+            sigmaX: 10,
+            sigmaY: 10,
+          ),
+          child: LoginView()),
     );
   }
 }

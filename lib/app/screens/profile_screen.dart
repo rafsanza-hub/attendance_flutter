@@ -11,34 +11,34 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          // Background
-          Container(
-            height: 1000,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  AppColors.purple500,
-                  AppColors.purple300,
-                ],
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            // Background
+            Container(
+              height: MediaQuery.of(context).size.height / 1.06,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    AppColors.purple500,
+                    AppColors.purple300,
+                  ],
+                ),
               ),
             ),
-          ),
 
-          // Main Content
-          Positioned.fill(
-            top: 135 + 44,
-            child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(24),
-              ),
-              child: Container(
-                color: AppColors.white,
-                padding: const EdgeInsets.only(top: 69, left: 24, right: 24),
-                child: SingleChildScrollView(
+            // Main Content
+            Positioned.fill(
+              top: 135 + 44,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(24),
+                ),
+                child: Container(
+                  color: AppColors.white,
+                  padding: const EdgeInsets.only(top: 69, left: 24, right: 24),
                   child: Column(
                     children: [
                       // Profile Info
@@ -96,80 +96,81 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
-          ),
 
-          // Profile Picture
-          Positioned(
-            top: 120,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Container(
-                width: 120,
-                height: 120,
-                decoration: BoxDecoration(
-                  image: const DecorationImage(
-                    image: AssetImage("assets/images/profile.jpg"),
-                    fit: BoxFit.cover,
-                  ),
-                  border: Border.all(
-                    width: 2,
-                    color: AppColors.white,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
+            // Profile Picture
+            Positioned(
+              top: 120,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    image: const DecorationImage(
+                      image: AssetImage("assets/images/profile.jpg"),
+                      fit: BoxFit.cover,
                     ),
+                    border: Border.all(
+                      width: 2,
+                      color: AppColors.white,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            // AppBar
+            SafeArea(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                child: Row(
+                  children: [
+                    InkWell(
+                      radius: 30,
+                      onTap: () => Get.to(MainScreen()),
+                      child: Container(
+                        height: 32,
+                        width: 32,
+                        decoration: BoxDecoration(
+                          color: AppColors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          size: 16,
+                          Iconsax.arrow_left_2_copy,
+                          color: AppColors.black,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        'My Profile',
+                        style: AppTextStyles.titleLarge.copyWith(
+                          fontSize: 18,
+                          height: null,
+                          letterSpacing: -0.5,
+                          color: AppColors.white,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(width: 32),
                   ],
                 ),
               ),
             ),
-          ),
-
-          // AppBar
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-              child: Row(
-                children: [
-                  InkWell(
-                    radius: 30,
-                    onTap: () => Get.to(MainScreen()),
-                    child: Container(
-                      height: 32,
-                      width: 32,
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        size: 16,
-                        Iconsax.arrow_left_2_copy,
-                        color: AppColors.black,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      'My Profile',
-                      style: AppTextStyles.titleLarge.copyWith(
-                        fontSize: 18,
-                        height: null,
-                        letterSpacing: -0.5,
-                        color: AppColors.white,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  const SizedBox(width: 32),
-                ],
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

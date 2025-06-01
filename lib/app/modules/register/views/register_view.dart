@@ -1,130 +1,121 @@
-import 'package:attendance_flutter/app/routes/app_pages.dart';
+import 'package:attendance_flutter/app/core/constants/app_colors.dart';
+import 'package:attendance_flutter/app/core/constants/app_text_styles.dart';
+import 'package:attendance_flutter/app/modules/register/controllers/register_controller.dart';
+import 'package:attendance_flutter/app/screens/profile_screen.dart';
+import 'package:attendance_flutter/app/widgets/app_elevated_button.dart';
+import 'package:attendance_flutter/app/widgets/app_text_field.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-
-import '../controllers/register_controller.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 class RegisterView extends GetView<RegisterController> {
-  final _formKey = GlobalKey<FormState>();
-  RegisterView({super.key});
+  const RegisterView({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: AppBar(
-            title: const Text('RegisterView'),
-            centerTitle: true,
-          ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    // Full Name
-                    TextFormField(
-                      controller: controller.nameC,
-                      decoration: const InputDecoration(
-                        labelText: 'Full Name',
-                        hintText: 'Enter your name',
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your name';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Email
-                    TextFormField(
-                      controller: controller.emailC,
-                      decoration: const InputDecoration(
-                        labelText: 'Email',
-                        hintText: 'Enter your email',
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your email';
-                        }
-                        if (!GetUtils.isEmail(value)) {
-                          return 'Please enter a valid email';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Password
-                    TextFormField(
-                      controller: controller.passwordC,
-                      decoration: const InputDecoration(
-                        labelText: 'Password',
-                        hintText: 'Enter your password',
-                        border: OutlineInputBorder(),
-                      ),
-                      obscureText: true,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your password';
-                        }
-                        if (value.length < 6) {
-                          return 'Password must be at least 6 characters';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 20),
-
-                    //  Register Button
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            controller.register(
-                                controller.nameC.text,
-                                controller.emailC.text,
-                                controller.passwordC.text);
-                          }
-                        },
-                        child: const Text('Register'),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    SizedBox(
-                      width: double.infinity,
-                      child: OutlinedButton(
-                        onPressed: () {
-                          Get.offAllNamed(Routes.LOGIN);
-                        },
-                        child: const Text('Login'),
-                      ),
-                    ),
-                  ],
-                ),
+    return Scaffold(
+      body: SafeArea(
+          child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: Column(
+          children: [
+            SizedBox(height: 44),
+            Container(
+              height: 56,
+              width: 56,
+              color: AppColors.purple500,
+            ),
+            SizedBox(height: 12),
+            Text(
+              'Work Mate',
+              style: AppTextStyles.titleLarge.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                height: 26 / 20,
               ),
             ),
-          ),
-        ),
-        Obx(() => controller.isLoading.value
-            ? Center(
-                child: Container(
-                  height: MediaQuery.of(context).size.height,
-                  color: Colors.black.withOpacity(0.5),
-                  child: const Center(
-                    child: CircularProgressIndicator(),
+            SizedBox(height: 6),
+            Text(
+              'Register Using Your Credentials',
+              style: AppTextStyles.bodyMedium.copyWith(
+                fontSize: 12,
+                height: 14 / 12,
+              ),
+            ),
+            SizedBox(height: 24),
+            Form(
+              child: Column(
+                children: [
+                  AppTextFormField(
+                    controller: controller.emailC,
+                    labelText: 'Email',
+                    prefixIcon: Iconsax.sms_copy,
+                    hintText: 'Enter your email',
+                    validator: controller.validateEmail,
                   ),
-                ),
-              )
-            : const SizedBox()),
-      ],
+                  SizedBox(height: 16),
+                  AppTextFormField(
+                    labelText: 'Phone Number',
+                    prefixIcon: Iconsax.call_copy,
+                    hintText: 'Enter your phone number',
+                  ),
+                  SizedBox(height: 16),
+                  AppTextFormField(
+                    labelText: 'Company ID',
+                    prefixIcon: Iconsax.sms_copy,
+                    hintText: 'Enter your email',
+                  ),
+                  SizedBox(height: 16),
+                  AppTextFormField(
+                    controller: controller.passwordC,
+                    labelText: 'Password',
+                    prefixIcon: Iconsax.finger_scan_copy,
+                    hintText: 'Enter your password',
+                    validator: controller.validatePassword,
+                  ),
+                  SizedBox(height: 16),
+                  AppTextFormField(
+                    controller: controller.confirmPasswordC,
+                    labelText: 'Confirm Password',
+                    prefixIcon: Iconsax.finger_scan_copy,
+                    hintText: 'Confirm your password',
+                  ),
+                  SizedBox(height: 36),
+                  AppElevatedButton(
+                    label: 'Sign Up',
+                    onPressed: () {
+                      Get.to(ProfileScreen());
+                    },
+                  ),
+                  SizedBox(height: 73),
+                  Center(
+                    child: RichText(
+                      text: TextSpan(
+                        style: AppTextStyles.labelSmall,
+                        children: [
+                          TextSpan(
+                            text: 'Already have an account? ',
+                            style: AppTextStyles.labelSmall
+                                .copyWith(color: AppColors.gray600),
+                          ),
+                          TextSpan(
+                            text: 'Sign in h  ere',
+                            style: AppTextStyles.labelSmall
+                                .copyWith(color: AppColors.purple500),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () => Get.to(RegisterView()),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      )),
     );
   }
 }

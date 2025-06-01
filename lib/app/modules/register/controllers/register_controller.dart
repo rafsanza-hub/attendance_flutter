@@ -8,6 +8,7 @@ class RegisterController extends GetxController {
   final nameC = TextEditingController();
   final emailC = TextEditingController();
   final passwordC = TextEditingController();
+  final confirmPasswordC = TextEditingController();
 
   RxBool isLoading = false.obs;
 
@@ -35,5 +36,47 @@ class RegisterController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  String? validateName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Name is required';
+    }
+    return null;
+  }
+
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Email is required';
+    }
+    if (GetUtils.isEmail(value)) {
+      return 'Email is not valid';
+    }
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Password is required';
+    }
+    return null;
+  }
+
+  String? validateConfirmPassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Confirm Password is required';
+    }
+    if (value != passwordC.text) {
+      return 'Password does not match';
+    }
+    return null;
+  }
+
+  @override
+  void onClose() {
+    nameC.dispose();
+    emailC.dispose();
+    passwordC.dispose();
+    super.onClose();
   }
 }

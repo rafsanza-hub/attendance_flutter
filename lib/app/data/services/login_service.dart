@@ -57,6 +57,25 @@ class AuthService extends GetxService {
     }
   }
 
+  Future<void> signUp(UserModel user, String password) async {
+    try {
+      final userCredential = await _auth.createUserWithEmailAndPassword(
+        email: user.email,
+        password: password,
+      );
+      if (userCredential.user != null) {
+        await _firestore.collection('users').doc(userCredential.user!.uid).set({
+          'tenantId': user.tenantId,
+          'role': user.role,
+          'email': user.email,
+        });
+        await userCredential.user!.sendEmailVerification();
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> signOut() async {
     await _auth.signOut();
   }

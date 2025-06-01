@@ -6,10 +6,16 @@ import '../modules/attendance/bindings/attendance_binding.dart';
 import '../modules/attendance/views/attendance_view.dart';
 import '../modules/dashboard/bindings/dashboard_binding.dart';
 import '../modules/dashboard/views/dashboard_view.dart';
+import '../modules/home/bindings/home_binding.dart';
+import '../modules/home/views/home_view.dart';
+import '../modules/leave/bindings/leave_binding.dart';
+import '../modules/leave/views/leave_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/main/bindings/main_binding.dart';
 import '../modules/main/views/main_view.dart';
+import '../modules/onboarding/bindings/onboarding_binding.dart';
+import '../modules/onboarding/views/onboarding_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 import '../modules/register/bindings/register_binding.dart';
@@ -44,7 +50,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.REGISTER,
-      page: () => RegisterView(),
+      page: () => const RegisterView(),
       binding: RegisterBinding(),
     ),
     GetPage(
@@ -66,6 +72,21 @@ class AppPages {
       name: _Paths.TENANT,
       page: () => const TenantView(),
       binding: TenantBinding(),
+    ),
+    GetPage(
+      name: _Paths.ONBOARDING,
+      page: () => const OnboardingView(),
+      binding: OnboardingBinding(),
+    ),
+    GetPage(
+      name: _Paths.LEAVE,
+      page: () => const LeaveView(),
+      binding: LeaveBinding(),
+    ),
+    GetPage(
+      name: _Paths.HOME,
+      page: () => const HomeView(),
+      binding: HomeBinding(),
     ),
   ];
 }
