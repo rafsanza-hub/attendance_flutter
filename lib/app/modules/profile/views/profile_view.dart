@@ -1,7 +1,5 @@
 import 'package:attendance_flutter/app/data/models/app_chip.dart';
-import 'package:attendance_flutter/app/modules/login/views/login_view.dart';
 import 'package:attendance_flutter/app/modules/profile/controllers/profile_controller.dart';
-import 'package:attendance_flutter/app/routes/app_pages.dart';
 import 'package:attendance_flutter/app/core/constants/app_colors.dart';
 import 'package:attendance_flutter/app/core/constants/app_text_styles.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +35,7 @@ class ProfileView extends GetView<ProfileController> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: Colors.black.withValues(alpha: 0.1),
                       blurRadius: 10,
                       offset: const Offset(0, 0),
                     ),
@@ -70,7 +68,7 @@ class ProfileView extends GetView<ProfileController> {
 
               //     minimumSize: const Size(0, 0),
               //     elevation: 1,
-              //     shadowColor: Colors.black.withOpacity(0.1),
+              //     shadowColor: Colors.black.withValues(alpha: 0.1),
               //   ),
               //   child: Text(
               //     'Edit Profile',
@@ -81,7 +79,7 @@ class ProfileView extends GetView<ProfileController> {
               // ),
               AppChip('Edit Profile',
                   isSelected: true,
-                  shadowColor: AppColors.purple500.withOpacity(0.5)),
+                  shadowColor: AppColors.purple500.withValues(alpha: 0.5)),
               const SizedBox(height: 17),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 22),

@@ -2,7 +2,6 @@ import 'package:attendance_flutter/app/modules/attendance/views/attendance_view.
 import 'package:attendance_flutter/app/modules/home/views/home_view.dart';
 import 'package:attendance_flutter/app/modules/leave/views/leave_view.dart';
 import 'package:attendance_flutter/app/modules/main/controllers/main_controller.dart';
-import 'package:attendance_flutter/app/screens/leave_screen.dart';
 import 'package:attendance_flutter/app/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

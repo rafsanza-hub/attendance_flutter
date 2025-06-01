@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'dart:ui'; // Kept for ImageFilter.blur
 
 import 'package:attendance_flutter/app/core/constants/app_colors.dart';
@@ -31,7 +30,7 @@ class SelectSheet extends StatefulWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      barrierColor: AppColors.purple500.withOpacity(0.1),
+      barrierColor: AppColors.purple500.withValues(alpha: 0.1),
       backgroundColor: Colors.transparent,
       builder: (context) => BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
@@ -100,7 +99,7 @@ class _SelectSheetState extends State<SelectSheet> {
                 selectedTitle: widget.controller.text,
               );
             },
-          ).toList(),
+          ),
 
           SizedBox(height: 30)
         ],
@@ -153,7 +152,7 @@ class _DelegationOptionState extends State<_DelegationOption> {
             children: [
               Expanded(
                 child: Text(
-                  '${widget.name}',
+                  widget.name,
                   style: AppTextStyles.bodyMedium.copyWith(
                     color: AppColors.gray900,
                     fontWeight: FontWeight.w400,

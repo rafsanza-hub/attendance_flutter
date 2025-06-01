@@ -1,15 +1,19 @@
+import 'package:attendance_flutter/app/core/logger/logger.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 
 class FaceVerificationDialog extends StatefulWidget {
+  const FaceVerificationDialog({super.key});
+
   @override
-  _FaceVerificationDialogState createState() => _FaceVerificationDialogState();
+  FaceVerificationDialogState createState() => FaceVerificationDialogState();
 }
 
-class _FaceVerificationDialogState extends State<FaceVerificationDialog> {
+class FaceVerificationDialogState extends State<FaceVerificationDialog> {
   CameraController? _cameraController;
+  // ignore: deprecated_member_use
   final faceDetector = GoogleMlKit.vision.faceDetector();
 
   @override
@@ -37,7 +41,7 @@ class _FaceVerificationDialogState extends State<FaceVerificationDialog> {
         Get.snackbar('Error', 'No cameras found');
       }
     } catch (e) {
-      print('Camera initialization error: $e');
+      AppLogger.instance.e('Camera initialization error: $e');
       Get.snackbar('Error', 'Failed to initialize camera');
     }
   }

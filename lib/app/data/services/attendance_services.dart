@@ -165,8 +165,10 @@ class AttendanceService extends GetxService {
     DateTime? endDate,
   }) async {
     try {
+      await _authService.waitUntilUserLoaded();
       final tenantId = _authService.getTenantId();
       final userId = _authService.currentUser.value?.uid;
+
       if (tenantId == null || userId == null) {
         throw Exception('Invalid user or tenant');
       }
@@ -225,7 +227,6 @@ class AttendanceService extends GetxService {
 
   // Placeholder untuk verifikasi wajah
   Future<bool> verifyFace() async {
-    // TODO: Integrasikan dengan ML Kit Face Detection atau API eksternal
     return true; // Simulasi verifikasi wajah berhasil
   }
 }

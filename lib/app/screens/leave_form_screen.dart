@@ -178,7 +178,8 @@ class LeaveFormScreen extends GetView<LeaveFormController> {
                               border: Border.all(color: AppColors.gray400),
                               boxShadow: [
                                 BoxShadow(
-                                  color: AppColors.gray900.withOpacity(0.05),
+                                  color:
+                                      AppColors.gray900.withValues(alpha: 0.05),
                                   blurRadius: 2,
                                   offset: const Offset(0, 1),
                                 ),
@@ -220,86 +221,86 @@ class LeaveFormScreen extends GetView<LeaveFormController> {
     );
   }
 
-  Widget _buildFormField({
-    required String label,
-    required String value,
-    required IconData icon,
-    IconData? trailingIcon,
-    String? prefixText,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: AppTextStyles.bodySmall.copyWith(
-            color: AppColors.gray600,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Container(
-          height: 44,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          decoration: BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: AppColors.gray400),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.gray900.withOpacity(0.05),
-                blurRadius: 2,
-                offset: const Offset(0, 1),
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Icon(
-                icon,
-                size: 20,
-                color: AppColors.gray600,
-              ),
-              const SizedBox(width: 10),
-              if (prefixText != null) ...[
-                Text(
-                  prefixText,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.gray900,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                const SizedBox(width: 4),
-                Icon(
-                  Iconsax.arrow_right_3_copy,
-                  size: 20,
-                  color: AppColors.gray600,
-                ),
-                const SizedBox(width: 4),
-              ],
-              Expanded(
-                child: Text(
-                  value,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: value.contains('Select') || value.contains('+62')
-                        ? AppColors.gray400
-                        : AppColors.gray900,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-              if (trailingIcon != null)
-                Icon(
-                  trailingIcon,
-                  size: 20,
-                  color: AppColors.gray600,
-                ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget _buildFormField({
+  //   required String label,
+  //   required String value,
+  //   required IconData icon,
+  //   IconData? trailingIcon,
+  //   String? prefixText,
+  // }) {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       Text(
+  //         label,
+  //         style: AppTextStyles.bodySmall.copyWith(
+  //           color: AppColors.gray600,
+  //           fontWeight: FontWeight.w400,
+  //         ),
+  //       ),
+  //       const SizedBox(height: 4),
+  //       Container(
+  //         height: 44,
+  //         padding: const EdgeInsets.symmetric(horizontal: 12),
+  //         decoration: BoxDecoration(
+  //           color: AppColors.white,
+  //           borderRadius: BorderRadius.circular(8),
+  //           border: Border.all(color: AppColors.gray400),
+  //           boxShadow: [
+  //             BoxShadow(
+  //               color: AppColors.gray900.withOpacity(0.05),
+  //               blurRadius: 2,
+  //               offset: const Offset(0, 1),
+  //             ),
+  //           ],
+  //         ),
+  //         child: Row(
+  //           children: [
+  //             Icon(
+  //               icon,
+  //               size: 20,
+  //               color: AppColors.gray600,
+  //             ),
+  //             const SizedBox(width: 10),
+  //             if (prefixText != null) ...[
+  //               Text(
+  //                 prefixText,
+  //                 style: AppTextStyles.bodyMedium.copyWith(
+  //                   color: AppColors.gray900,
+  //                   fontWeight: FontWeight.w400,
+  //                 ),
+  //               ),
+  //               const SizedBox(width: 4),
+  //               Icon(
+  //                 Iconsax.arrow_right_3_copy,
+  //                 size: 20,
+  //                 color: AppColors.gray600,
+  //               ),
+  //               const SizedBox(width: 4),
+  //             ],
+  //             Expanded(
+  //               child: Text(
+  //                 value,
+  //                 style: AppTextStyles.bodyMedium.copyWith(
+  //                   color: value.contains('Select') || value.contains('+62')
+  //                       ? AppColors.gray400
+  //                       : AppColors.gray900,
+  //                   fontWeight: FontWeight.w400,
+  //                 ),
+  //               ),
+  //             ),
+  //             if (trailingIcon != null)
+  //               Icon(
+  //                 trailingIcon,
+  //                 size: 20,
+  //                 color: AppColors.gray600,
+  //               ),
+  //           ],
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 }
 
 class LeaveFormController extends GetxController {

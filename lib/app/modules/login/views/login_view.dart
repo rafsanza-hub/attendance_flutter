@@ -1,8 +1,6 @@
 import 'dart:ui';
-
 import 'package:attendance_flutter/app/modules/login/controllers/login_controller.dart';
 import 'package:attendance_flutter/app/routes/app_pages.dart';
-import 'package:attendance_flutter/app/screens/register_screen.dart';
 import 'package:attendance_flutter/app/widgets/app_elevated_button.dart';
 import 'package:attendance_flutter/app/widgets/app_outlined_button.dart';
 import 'package:attendance_flutter/app/widgets/app_text_field.dart';
@@ -175,7 +173,7 @@ class LoginView extends GetView<LoginController> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      barrierColor: AppColors.purple500.withOpacity(0.1),
+      barrierColor: AppColors.purple500.withValues(alpha: 0.1),
       backgroundColor: Colors.transparent,
       builder: (context) => BackdropFilter(
           filter: ImageFilter.blur(

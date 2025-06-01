@@ -226,6 +226,22 @@ class AttendanceView extends GetView<AttendanceController> {
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Column(
                     children: [
+                      ListView.separated(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: controller.attendances.length,
+                          itemBuilder: (context, index) {
+                            final attendance = controller.attendances[index];
+                            return _buildAttendanceRecord(
+                              date: '27 September 2024',
+                              totalHours: '${attendance.checkIn!.hour} hrs',
+                              clockInOut:
+                                  '${attendance.checkIn!.hour}:${attendance.checkIn!.minute}  —  ${attendance.checkOut ?? '-'}',
+                            );
+                          },
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(height: 16)),
                       // Record 1
                       _buildAttendanceRecord(
                         date: '27 September 2024',

@@ -1,3 +1,4 @@
+import 'package:attendance_flutter/app/core/logger/logger.dart';
 import 'package:attendance_flutter/app/routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -32,7 +33,7 @@ class RegisterController extends GetxController {
       }
       Get.offAllNamed(Routes.LOGIN);
     } catch (e) {
-      print(e);
+      AppLogger.instance.e(e);
     } finally {
       isLoading.value = false;
     }

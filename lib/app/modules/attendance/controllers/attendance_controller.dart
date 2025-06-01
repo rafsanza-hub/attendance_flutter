@@ -1,3 +1,4 @@
+import 'package:attendance_flutter/app/core/logger/logger.dart';
 import 'package:attendance_flutter/app/data/models/attendance_model.dart';
 import 'package:attendance_flutter/app/data/services/attendance_services.dart';
 import 'package:attendance_flutter/app/data/services/login_service.dart';
@@ -21,6 +22,7 @@ class AttendanceController extends GetxController {
         forAdmin: isAdmin.value,
       ));
     }
+    fetchAttendances();
   }
 
   // Mencatat check-in
@@ -73,7 +75,9 @@ class AttendanceController extends GetxController {
         endDate: endDate,
       );
       attendances.assignAll(result);
+      AppLogger.instance.d('Fetched $result attendances');
     } catch (e) {
+      AppLogger.instance.e('Error fetching attendances: $e');
       Get.snackbar('Error', e.toString());
     } finally {
       isLoading.value = false;

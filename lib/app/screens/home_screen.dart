@@ -62,7 +62,7 @@ class HomeScreen extends StatelessWidget {
                               ),
                               const SizedBox(width: 8),
                               // Placeholder for verified badge or icon
-                              Container(
+                              SizedBox(
                                 width: 20,
                                 height: 20,
                                 child: const Icon(

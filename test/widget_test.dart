@@ -9,7 +9,6 @@ import 'package:attendance_flutter/app/modules/login/views/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:attendance_flutter/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

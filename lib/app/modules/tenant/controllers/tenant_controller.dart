@@ -1,5 +1,3 @@
-import 'package:attendance_flutter/app/data/models/tenant_model.dart';
-import 'package:attendance_flutter/app/data/services/login_service.dart';
 import 'package:attendance_flutter/app/data/services/tenant_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,11 +10,6 @@ class TenantController extends GetxController {
   final startTimeController = TextEditingController(text: '08:00');
   final endTimeController = TextEditingController(text: '17:00');
   final isLoading = false.obs;
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   Future<void> createTenant() async {
     try {

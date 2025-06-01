@@ -1,3 +1,5 @@
+// ignore_for_file: sized_box_for_whitespace
+
 import 'package:attendance_flutter/app/modules/home/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -237,9 +239,9 @@ class HomeView extends GetView<HomeController> {
                           title: 'Townhall Meeting',
                           time: '01:30 AM - 02:00 AM',
                           avatars: [
-                            'https://placehold.co/24x24',
-                            'https://placehold.co/24x24',
-                            'https://placehold.co/24x24',
+                            'assets/images/profile.jpg',
+                            'assets/images/profile.jpg',
+                            'assets/images/profile.jpg',
                           ],
                           onJoin: () {},
                         ),
@@ -249,9 +251,9 @@ class HomeView extends GetView<HomeController> {
                           title: 'Dashboard Report',
                           time: '01:30 AM - 02:00 AM',
                           avatars: [
-                            'https://placehold.co/24x24',
-                            'https://placehold.co/24x24',
-                            'https://placehold.co/24x24',
+                            'assets/images/profile.jpg',
+                            'assets/images/profile.jpg',
+                            'assets/images/profile.jpg',
                           ],
                           onJoin: () {},
                         ),
@@ -315,9 +317,9 @@ class HomeView extends GetView<HomeController> {
                           status: 'In Progress',
                           priority: 'High',
                           avatars: [
-                            'https://placehold.co/24x24',
-                            'https://placehold.co/24x24',
-                            'https://placehold.co/24x24',
+                            'assets/images/profile.jpg',
+                            'assets/images/profile.jpg',
+                            'assets/images/profile.jpg',
                           ],
                           progress: 0.85,
                           dueDate: '27 April',
@@ -413,7 +415,7 @@ class HomeView extends GetView<HomeController> {
                           height: 24,
                           decoration: ShapeDecoration(
                             image: DecorationImage(
-                              image: NetworkImage(url),
+                              image: AssetImage(url),
                               fit: BoxFit.cover,
                             ),
                             shape: const CircleBorder(
@@ -604,7 +606,7 @@ class HomeView extends GetView<HomeController> {
                           height: 24,
                           decoration: ShapeDecoration(
                             image: DecorationImage(
-                              image: NetworkImage(url),
+                              image: AssetImage(url),
                               fit: BoxFit.cover,
                             ),
                             shape: const CircleBorder(

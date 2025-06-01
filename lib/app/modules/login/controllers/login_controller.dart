@@ -1,5 +1,5 @@
+import 'package:attendance_flutter/app/core/logger/logger.dart';
 import 'package:attendance_flutter/app/data/services/login_service.dart';
-import 'package:attendance_flutter/app/data/services/tenant_services.dart';
 import 'package:attendance_flutter/app/routes/app_pages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 
 class LoginController extends GetxController {
   final AuthService _authService = Get.find();
-  final TenantService _tenantService = Get.find();
+  final tenantService = Get.find();
   final emailC = TextEditingController();
   final passwordC = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -28,7 +28,7 @@ class LoginController extends GetxController {
         // Jika admin
       } else if (_authService.isAdmin()) {
         final tenantId = _authService.getTenantId();
-        print('tenantId: $tenantId');
+        AppLogger.instance.d('tenantId: $tenantId');
         if (tenantId != null) {
           Get.offNamed('/main');
         } else {

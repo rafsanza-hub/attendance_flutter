@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class LeaveRequestView extends StatefulWidget {
-  const LeaveRequestView({Key? key}) : super(key: key);
+  const LeaveRequestView({super.key});
 
   @override
   State<LeaveRequestView> createState() => _LeaveRequestViewState();
 }
 
 class _LeaveRequestViewState extends State<LeaveRequestView> {
-  int _selectedTabIndex = 0;
+  final int _selectedTabIndex = 0;
   final List<String> _tabs = ['Upcoming', 'Past', 'Team Leave'];
 
   @override
@@ -90,7 +90,7 @@ class _LeaveRequestViewState extends State<LeaveRequestView> {
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: borderColor.withOpacity(0.5)),
+        border: Border.all(color: borderColor.withValues(alpha: 0.5)),
       ),
       padding: const EdgeInsets.all(16),
       child: Column(
