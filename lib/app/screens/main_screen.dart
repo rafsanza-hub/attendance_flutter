@@ -1,3 +1,4 @@
+import 'package:attendance_flutter/app/modules/main/controllers/main_controller.dart';
 import 'package:attendance_flutter/app/screens/attendance_screen.dart';
 import 'package:attendance_flutter/app/screens/home_screen.dart';
 import 'package:attendance_flutter/app/screens/leave_form_screen.dart';
@@ -49,18 +50,18 @@ class MainScreen extends GetView<MainController> {
   }
 }
 
-class MainController extends GetxController {
-  final RxInt currentIndex = 0.obs;
+// class MainController extends GetxController {
+//   final RxInt currentIndex = 0.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    Get.put(LeaveController());
-    Get.lazyPut<SelfieController>(() => SelfieController());
-    Get.lazyPut<LeaveFormController>(() => LeaveFormController());
-  }
+//   @override
+//   void onInit() {
+//     super.onInit();
+//     Get.put(LeaveController());
+//     Get.lazyPut<SelfieController>(() => SelfieController());
+//     Get.lazyPut<LeaveFormController>(() => LeaveFormController());
+//   }
 
-  void changeIndex(int index) {
-    currentIndex.value = index;
-  }
-}
+//   void changeIndex(int index) {
+//     currentIndex.value = index;
+//   }
+// }
