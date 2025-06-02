@@ -1,4 +1,5 @@
 import 'package:attendance_flutter/app/modules/attendance/controllers/attendance_controller.dart';
+import 'package:attendance_flutter/app/routes/app_pages.dart';
 import 'package:attendance_flutter/app/screens/clock_in_screen.dart';
 import 'package:attendance_flutter/app/widgets/app_elevated_button.dart';
 import 'package:flutter/material.dart';
@@ -213,7 +214,7 @@ class AttendanceView extends GetView<AttendanceController> {
                         AppElevatedButton(
                           label: 'Clock In',
                           onPressed: () {
-                            Get.to(ClockInScreen());
+                            Get.toNamed(Routes.CLOCK_IN);
                           },
                         ),
                       ],

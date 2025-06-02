@@ -39,7 +39,7 @@ class OnboardingView extends GetView<OnboardingController> {
               child: Column(
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 86),
+                  SizedBox(height: 0),
                   SizedBox(
                     height: 550,
                     child: PageView(
