@@ -10,7 +10,7 @@ class AttendanceController extends GetxController {
   final RxList<AttendanceModel> attendances = <AttendanceModel>[].obs;
   final isLoading = false.obs;
   final isAdmin = false.obs;
-  final currentAttendanceId = RxString('');
+  final todayAttendance = Rxn<AttendanceModel>();
 
   @override
   void onInit() {
@@ -22,38 +22,55 @@ class AttendanceController extends GetxController {
         forAdmin: isAdmin.value,
       ));
     }
-    fetchAttendances();
+    checkTodayStatus();
   }
 
-  // Mencatat check-in
-  Future<void> checkIn() async {
-    try {
-      isLoading.value = true;
-      final position = await _attendanceService.getCurrentLocation();
-      final isFaceVerified = await _attendanceService.verifyFace();
-      final attendanceId = await _attendanceService.checkIn(
-        latitude: position.latitude,
-        longitude: position.longitude,
-        isFaceVerified: isFaceVerified,
-      );
-      currentAttendanceId.value = attendanceId;
-      Get.snackbar('Success', 'Checked in successfully');
-    } catch (e) {
-      Get.snackbar('Error', e.toString());
-    } finally {
-      isLoading.value = false;
+  bool get isClockedIn => todayAttendance.value != null;
+  bool get isClockedOut => todayAttendance.value?.checkOut != null;
+  get todayWorkingHours {
+    if (isClockedIn) {
+      return todayAttendance.value?.checkOut!
+          .difference(todayAttendance.value?.checkIn ?? DateTime.now())
+          .inMinutes;
     }
+    return DateTime.now()
+        .difference(todayAttendance.value?.checkIn ?? DateTime.now())
+        .inMinutes;
+  }
+
+  // // Mencatat check-in
+  // Future<void> checkIn() async {
+  //   try {
+  //     isLoading.value = true;
+  //     final position = await _attendanceService.getCurrentLocation();
+  //     final isFaceVerified = await _attendanceService.verifyFace();
+  //     final attendanceId = await _attendanceService.checkIn(
+  //       latitude: position.latitude,
+  //       longitude: position.longitude,
+  //       isFaceVerified: isFaceVerified,
+  //     );
+  //     currentAttendanceId.value = attendanceId;
+  //     Get.snackbar('Success', 'Checked in successfully');
+  //   } catch (e) {
+  //     Get.snackbar('Error', e.toString());
+  //   } finally {
+  //     isLoading.value = false;
+  //   }
+  // }
+
+  void checkTodayStatus() {
+    final result = _attendanceService.getTodayAttendanceStream();
+    todayAttendance.bindStream(result);
   }
 
   // Mencatat check-out
   Future<void> checkOut() async {
     try {
       isLoading.value = true;
-      if (currentAttendanceId.value.isEmpty) {
+      if (todayAttendance.value?.id == null) {
         throw Exception('No active check-in found');
       }
-      await _attendanceService.checkOut(currentAttendanceId.value);
-      currentAttendanceId.value = '';
+      await _attendanceService.checkOut(todayAttendance.value?.id ?? '');
       Get.snackbar('Success', 'Checked out successfully');
     } catch (e) {
       Get.snackbar('Error', e.toString());

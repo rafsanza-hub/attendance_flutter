@@ -164,12 +164,15 @@ class SubmitLeaveView extends GetView<SubmitLeaveController> {
                                         onSelectionChanged:
                                             (DateRangePickerSelectionChangedArgs
                                                 args) {
-                                          if (args.value is PickerDateRange) {
+                                          if (args.value is PickerDateRange &&
+                                              args.value.startDate != null &&
+                                              args.value.endDate != null) {
                                             controller.startDateTemp =
                                                 args.value.startDate;
                                             controller.endDateTemp =
                                                 args.value.endDate;
                                           }
+
                                           if (args.value is DateTime) {
                                             controller.startDateTemp =
                                                 args.value as DateTime;
@@ -236,9 +239,9 @@ class SubmitLeaveView extends GetView<SubmitLeaveController> {
                                               label: 'Submit Date',
                                               onPressed: () {
                                                 controller.startDate =
-                                                    controller.startDate;
+                                                    controller.startDateTemp;
                                                 controller.endDate =
-                                                    controller.endDate;
+                                                    controller.endDateTemp;
                                                 controller.durationC.text =
                                                     '${DateFormat('dd MMM yyyy').format(controller.startDateTemp)} - ${DateFormat('dd MMM yyyy').format(controller.endDateTemp)}';
                                                 Get.back();
@@ -323,7 +326,8 @@ class SubmitLeaveView extends GetView<SubmitLeaveController> {
                                   ),
                                 ],
                               ),
-                              child: TextField(
+                              child: TextFormField(
+                                controller: controller.descriptionC,
                                 maxLines: 3,
                                 decoration: InputDecoration(
                                   hintText: 'Enter Leave Description',
@@ -337,6 +341,7 @@ class SubmitLeaveView extends GetView<SubmitLeaveController> {
                                   color: AppColors.gray900,
                                   fontWeight: FontWeight.w400,
                                 ),
+                                validator: controller.validateDescription,
                               ),
                             ),
                             const SizedBox(height: 24),

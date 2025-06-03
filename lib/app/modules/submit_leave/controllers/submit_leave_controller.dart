@@ -2,7 +2,6 @@ import 'package:attendance_flutter/app/core/logger/logger.dart';
 import 'package:attendance_flutter/app/data/services/leave_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class SubmitLeaveController extends GetxController {
   final LeaveService _leaveService = Get.find();
@@ -16,8 +15,8 @@ class SubmitLeaveController extends GetxController {
 
   DateTime startDateTemp = DateTime.now();
   DateTime endDateTemp = DateTime.now();
-  DateTime startDate = DateTime.now();
-  DateTime endDate = DateTime.now();
+  DateTime? startDate;
+  DateTime? endDate;
 
   List<String> leaveCategories = [
     'Sick Leave',
@@ -36,8 +35,8 @@ class SubmitLeaveController extends GetxController {
   Future<void> submitLeave() async {
     try {
       await _leaveService.submitLeave(
-        startDate: startDate,
-        endDate: endDate,
+        startDate: startDate!,
+        endDate: endDate!,
         reason: descriptionC.text,
       );
       Get.back();
@@ -63,7 +62,8 @@ class SubmitLeaveController extends GetxController {
   }
 
   String? validateDuration(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value == null ||
+        value.isEmpty || startDate == null || endDate == null) {
       return 'Duration is required';
     }
     return null;

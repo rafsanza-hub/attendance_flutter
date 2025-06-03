@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 
 class LoginController extends GetxController {
   final AuthService _authService = Get.find();
-  final tenantService = Get.find();
   final emailC = TextEditingController();
   final passwordC = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -20,7 +19,9 @@ class LoginController extends GetxController {
     isLoading.value = true;
     if (!formKey.currentState!.validate()) return;
     try {
+      AppLogger.instance.d('email: ${emailC.text}');
       await _authService.signIn(emailC.text, passwordC.text);
+      AppLogger.instance.d('email: ${emailC.text}');
       // Jika superadmin
       if (_authService.isSuperAdmin()) {
         Get.offNamed('/tenant');
@@ -57,6 +58,7 @@ class LoginController extends GetxController {
         Get.snackbar('Error', e.message ?? 'An error occurred');
       }
     } catch (e) {
+      AppLogger.instance.e('Error: $e');
       Get.snackbar('Error', e.toString());
     } finally {
       isLoading.value = false;
@@ -91,11 +93,4 @@ class LoginController extends GetxController {
     }
     return null;
   }
-
-  // String? confirmPasswordValidator(String value, String password) {
-  //   if (value != password) {
-  //     return 'Password tidak sama';
-  //   }
-  //   return null;
-  // }
 }

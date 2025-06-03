@@ -17,6 +17,8 @@ abstract class Routes {
   static const LEAVE = _Paths.LEAVE;
   static const HOME = _Paths.HOME;
   static const SUBMIT_LEAVE = _Paths.SUBMIT_LEAVE;
+  static const CLOCK_IN = _Paths.CLOCK_IN;
+  static const FACE_RECOGNITION = _Paths.FACE_RECOGNITION;
 }
 
 abstract class _Paths {
@@ -33,4 +35,6 @@ abstract class _Paths {
   static const LEAVE = '/leave';
   static const HOME = '/home';
   static const SUBMIT_LEAVE = '/submit-leave';
+  static const CLOCK_IN = '/clock-in';
+  static const FACE_RECOGNITION = '/face-recognition';
 }

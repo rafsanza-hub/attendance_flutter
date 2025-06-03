@@ -21,317 +21,334 @@ class LeaveView extends GetView<LeaveController> {
         height: double.infinity,
         child: Stack(
           children: [
-            // Header Gradient
-            Container(
-              width: double.infinity,
-              height: 233,
-              decoration: BoxDecoration(
-                color: AppColors.purple500,
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(24),
-                  bottomRight: Radius.circular(24),
-                ),
-              ),
+            SingleChildScrollView(
               child: Stack(
                 children: [
-                  Positioned(
-                    right: 0,
-                    top: MediaQuery.of(context).padding.top,
-                    child: Container(
-                      width: 101,
-                      height: 85,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/image.png'),
-                          fit: BoxFit.cover,
-                        ),
+                  // Header Gradient
+                  Container(
+                    width: double.infinity,
+                    height: 233,
+                    decoration: BoxDecoration(
+                      color: AppColors.purple500,
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(24),
+                        bottomRight: Radius.circular(24),
                       ),
                     ),
-                  ),
-                  // Time Display
-
-                  // Header Text
-                  Positioned(
-                    left: 28,
-                    top: 69,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Stack(
                       children: [
-                        Text(
-                          'Leave Summary',
-                          style: AppTextStyles.headlineSmall.copyWith(
-                            color: AppColors.white,
-                            fontWeight: FontWeight.w600,
+                        Positioned(
+                          right: 0,
+                          top: MediaQuery.of(context).padding.top,
+                          child: Container(
+                            width: 101,
+                            height: 85,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage('assets/images/image.png'),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
                         ),
-                        Text(
-                          'Submit Leave',
-                          style: AppTextStyles.bodyMedium.copyWith(
-                            color: AppColors.purple200,
-                            fontWeight: FontWeight.w500,
+                        // Time Display
+
+                        // Header Text
+                        Positioned(
+                          left: 28,
+                          top: 69,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Leave Summary',
+                                style: AppTextStyles.headlineSmall.copyWith(
+                                  color: AppColors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              Text(
+                                'Submit Leave',
+                                style: AppTextStyles.bodyMedium.copyWith(
+                                  color: AppColors.purple200,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-            // Main Content
-            Obx(() {
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 148),
-                    // Total Leave Card
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12),
-                        decoration: BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Header
-                            Text(
-                              'Total Leave',
-                              style: AppTextStyles.titleSmall.copyWith(
-                                color: AppColors.gray900,
-                                fontWeight: FontWeight.w500,
-                              ),
+                  // Main Content
+                  Obx(() {
+                    return Column(
+                      children: [
+                        const SizedBox(height: 148),
+                        // Total Leave Card
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 12),
+                            decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(8),
                             ),
-                            const SizedBox(height: 2),
-                            Text(
-                              'Period 1 Jan 2024 - 30 Dec 2024',
-                              style: AppTextStyles.bodySmall.copyWith(
-                                color: AppColors.gray500,
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            // Stats
-                            Row(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Available
-                                Expanded(
-                                  child: Container(
-                                    padding: const EdgeInsets.all(12)
-                                        .copyWith(bottom: 10),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.gray25,
-                                      borderRadius: BorderRadius.circular(8),
-                                      border:
-                                          Border.all(color: AppColors.gray50),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Container(
-                                              width: 10,
-                                              height: 10,
-                                              decoration: const ShapeDecoration(
-                                                color: Color(0xFF19B36E),
-                                                shape: CircleBorder(),
-                                              ),
-                                            ),
-                                            const SizedBox(width: 4),
-                                            Text(
-                                              'Available',
-                                              style: AppTextStyles.labelMedium
-                                                  .copyWith(
-                                                color: AppColors.gray600,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 6),
-                                        Text(
-                                          controller.availableLeaves.value
-                                              .toString(),
-                                          style:
-                                              AppTextStyles.titleLarge.copyWith(
-                                            color: AppColors.gray900,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                // Header
+                                Text(
+                                  'Total Leave',
+                                  style: AppTextStyles.titleSmall.copyWith(
+                                    color: AppColors.gray900,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                const SizedBox(width: 8),
-                                // Leave Used
-                                Expanded(
-                                  child: Container(
-                                    padding: const EdgeInsets.all(12)
-                                        .copyWith(bottom: 10),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.gray25,
-                                      borderRadius: BorderRadius.circular(8),
-                                      border:
-                                          Border.all(color: AppColors.gray50),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
+                                const SizedBox(height: 2),
+                                Text(
+                                  'Period 1 Jan 2024 - 30 Dec 2024',
+                                  style: AppTextStyles.bodySmall.copyWith(
+                                    color: AppColors.gray500,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                // Stats
+                                Row(
+                                  children: [
+                                    // Available
+                                    Expanded(
+                                      child: Container(
+                                        padding: const EdgeInsets.all(12)
+                                            .copyWith(bottom: 10),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.gray25,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          border: Border.all(
+                                              color: AppColors.gray50),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            Container(
-                                              width: 10,
-                                              height: 10,
-                                              decoration: const ShapeDecoration(
-                                                color: AppColors.purple500,
-                                                shape: CircleBorder(),
-                                              ),
+                                            Row(
+                                              children: [
+                                                Container(
+                                                  width: 10,
+                                                  height: 10,
+                                                  decoration:
+                                                      const ShapeDecoration(
+                                                    color: Color(0xFF19B36E),
+                                                    shape: CircleBorder(),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 4),
+                                                Text(
+                                                  'Available',
+                                                  style: AppTextStyles
+                                                      .labelMedium
+                                                      .copyWith(
+                                                    color: AppColors.gray600,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            const SizedBox(width: 4),
+                                            const SizedBox(height: 6),
                                             Text(
-                                              'Leave Used',
-                                              style: AppTextStyles.labelMedium
+                                              controller.availableLeaves.value
+                                                  .toString(),
+                                              style: AppTextStyles.titleLarge
                                                   .copyWith(
-                                                color: AppColors.gray600,
+                                                color: AppColors.gray900,
+                                                fontWeight: FontWeight.w400,
                                               ),
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(height: 6),
-                                        Text(
-                                          controller.usedLeaves.value
-                                              .toString(),
-                                          style:
-                                              AppTextStyles.titleLarge.copyWith(
-                                            color: AppColors.gray900,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
+                                    const SizedBox(width: 8),
+                                    // Leave Used
+                                    Expanded(
+                                      child: Container(
+                                        padding: const EdgeInsets.all(12)
+                                            .copyWith(bottom: 10),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.gray25,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          border: Border.all(
+                                              color: AppColors.gray50),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Container(
+                                                  width: 10,
+                                                  height: 10,
+                                                  decoration:
+                                                      const ShapeDecoration(
+                                                    color: AppColors.purple500,
+                                                    shape: CircleBorder(),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 4),
+                                                Text(
+                                                  'Leave Used',
+                                                  style: AppTextStyles
+                                                      .labelMedium
+                                                      .copyWith(
+                                                    color: AppColors.gray600,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 6),
+                                            Text(
+                                              controller.usedLeaves.value
+                                                  .toString(),
+                                              style: AppTextStyles.titleLarge
+                                                  .copyWith(
+                                                color: AppColors.gray900,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    // Filter Tabs
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Container(
-                        padding: const EdgeInsets.all(2),
-                        decoration: BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: Obx(() {
-                          return Row(
-                            children: [
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () => controller.changeTab(0),
-                                  child: Container(
-                                    height: 32,
-                                    decoration: BoxDecoration(
-                                      color: controller.isTab1
-                                          ? AppColors.purple500
-                                          : AppColors.white,
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Review',
-                                        style: AppTextStyles.bodySmall.copyWith(
+                        const SizedBox(height: 16),
+                        // Filter Tabs
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Container(
+                            padding: const EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: Obx(() {
+                              return Row(
+                                children: [
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () => controller.changeTab(0),
+                                      child: Container(
+                                        height: 32,
+                                        decoration: BoxDecoration(
                                           color: controller.isTab1
-                                              ? AppColors.white
-                                              : AppColors.gray600,
-                                          fontWeight: FontWeight.w500,
+                                              ? AppColors.purple500
+                                              : AppColors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            'Review',
+                                            style: AppTextStyles.bodySmall
+                                                .copyWith(
+                                              color: controller.isTab1
+                                                  ? AppColors.white
+                                                  : AppColors.gray600,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ),
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () => controller.changeTab(1),
-                                  child: Container(
-                                    height: 32,
-                                    decoration: BoxDecoration(
-                                      color: controller.isTab2
-                                          ? AppColors.purple500
-                                          : AppColors.white,
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Approved',
-                                        style: AppTextStyles.bodySmall.copyWith(
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () => controller.changeTab(1),
+                                      child: Container(
+                                        height: 32,
+                                        decoration: BoxDecoration(
                                           color: controller.isTab2
-                                              ? AppColors.white
-                                              : AppColors.gray600,
-                                          fontWeight: FontWeight.w500,
+                                              ? AppColors.purple500
+                                              : AppColors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            'Approved',
+                                            style: AppTextStyles.bodySmall
+                                                .copyWith(
+                                              color: controller.isTab2
+                                                  ? AppColors.white
+                                                  : AppColors.gray600,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ),
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () => controller.changeTab(2),
-                                  child: Container(
-                                    height: 32,
-                                    decoration: BoxDecoration(
-                                      color: controller.isTab3
-                                          ? AppColors.purple500
-                                          : AppColors.white,
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Rejected',
-                                        style: AppTextStyles.bodySmall.copyWith(
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () => controller.changeTab(2),
+                                      child: Container(
+                                        height: 32,
+                                        decoration: BoxDecoration(
                                           color: controller.isTab3
-                                              ? AppColors.white
-                                              : AppColors.gray600,
-                                          fontWeight: FontWeight.w500,
+                                              ? AppColors.purple500
+                                              : AppColors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            'Rejected',
+                                            style: AppTextStyles.bodySmall
+                                                .copyWith(
+                                              color: controller.isTab3
+                                                  ? AppColors.white
+                                                  : AppColors.gray600,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ),
-                            ],
-                          );
-                        }),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    // Leave Record
-                    ListView.separated(
-                      padding: EdgeInsets.zero,
-                      itemCount: controller.leaves.length,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        final leave = controller.leaves[index];
-                        return _buildLeaveRecord(leave);
-                      },
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(height: 12),
-                    ),
-                  ],
-                ),
-              );
-            }),
-            // Floating Submit Leave Button
+                                ],
+                              );
+                            }),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        // Leave Record
+                        ListView.separated(
+                          padding: EdgeInsets.zero,
+                          itemCount: controller.leaves.length,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            final leave = controller.leaves[index];
+                            return _buildLeaveRecord(leave);
+                          },
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(height: 12),
+                        ),
+                        const SizedBox(height: 90),
+                      ],
+                    );
+                  }),
+                  // Floating Submit Leave Button
+                ],
+              ),
+            ),
             Positioned(
               left: 12,
               right: 12,

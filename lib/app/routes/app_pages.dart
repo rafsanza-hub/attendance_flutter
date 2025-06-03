@@ -4,8 +4,12 @@ import '../modules/LeaveRequest/bindings/leave_request_binding.dart';
 import '../modules/LeaveRequest/views/leave_request_view.dart';
 import '../modules/attendance/bindings/attendance_binding.dart';
 import '../modules/attendance/views/attendance_view.dart';
+import '../modules/clock_in/bindings/clock_in_binding.dart';
+import '../modules/clock_in/views/clock_in_view.dart';
 import '../modules/dashboard/bindings/dashboard_binding.dart';
 import '../modules/dashboard/views/dashboard_view.dart';
+import '../modules/face_recognition/bindings/face_recognition_binding.dart';
+import '../modules/face_recognition/views/face_recognition_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/leave/bindings/leave_binding.dart';
@@ -95,6 +99,16 @@ class AppPages {
       name: _Paths.SUBMIT_LEAVE,
       page: () => const SubmitLeaveView(),
       binding: SubmitLeaveBinding(),
+    ),
+    GetPage(
+      name: _Paths.CLOCK_IN,
+      page: () => const ClockInView(),
+      binding: ClockInBinding(),
+    ),
+    GetPage(
+      name: _Paths.FACE_RECOGNITION,
+      page: () => const FaceRecognitionView(),
+      binding: FaceRecognitionBinding(),
     ),
   ];
 }
