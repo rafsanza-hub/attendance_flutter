@@ -50,9 +50,10 @@ dependencies:
   latlong2: ^0.9.1
   logger: ^2.5.0
   path_provider: ^2.1.5
+  quiver: ^3.2.2
   rxdart: ^0.28.0
   smooth_page_indicator: ^1.2.1
-  syncfusion_flutter_datepicker: 29.1.38
+  syncfusion_flutter_datepicker:   29.1.38
   tflite_flutter: ^0.11.0
 
 dev_dependencies:

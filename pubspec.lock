@@ -61,10 +61,10 @@ packages:
     dependency: transitive
     description:
       name: camera_android_camerax
-      sha256: f0dcbce91623f75030840609de9b64d0d73f86df279c6e9588c1501245a05eb2
+      sha256: "9fb44e73e0fea3647a904dc26d38db24055e5b74fc68fd2b6d3abfa1bd20f536"
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.15+2"
+    version: "0.6.17"
   camera_avfoundation:
     dependency: transitive
     description:
@@ -737,7 +737,7 @@ packages:
     source: hosted
     version: "2.1.0"
   quiver:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: quiver
       sha256: ea0b925899e64ecdfbf9c7becb60d5b50e706ade44a85b2363be2a22d88117d2
