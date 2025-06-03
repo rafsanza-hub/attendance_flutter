@@ -1,6 +1,8 @@
+import 'dart:async';
+
+import 'package:attendance_flutter/app/core/logger/logger.dart';
 import 'package:attendance_flutter/app/data/services/login_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import '../models/attendance_model.dart';
 
@@ -133,29 +135,44 @@ class AttendanceService extends GetxService {
   // Mendapatkan stream daftar absensi
   Stream<List<AttendanceModel>> getAttendancesStream({
     bool forAdmin = false,
+    DateTime? startDate,
+    DateTime? endDate,
   }) {
-    final tenantId = _authService.getTenantId();
-    final userId = _authService.currentUser.value?.uid;
-    if (tenantId == null || userId == null) {
-      throw Exception('Invalid user or tenant');
+    try {
+      final tenantId = _authService.getTenantId();
+      final userId = _authService.currentUser.value?.uid;
+
+      if (tenantId == null || userId == null) {
+        throw Exception('Invalid user or tenant');
+      }
+
+      Query<Map<String, dynamic>> query = _firestore
+          .collection('tenants')
+          .doc(tenantId)
+          .collection('attendances');
+
+      // Filter berdasarkan peran
+      if (!forAdmin || _authService.getRole() != 'admin') {
+        query = query.where('userId', isEqualTo: userId);
+      }
+
+      // Filter berdasarkan tanggal
+      if (startDate != null && endDate != null) {
+        query = query
+            .where('checkIn', isGreaterThanOrEqualTo: startDate)
+            .where('checkIn', isLessThanOrEqualTo: endDate);
+      }
+
+      return query.snapshots().map((snapshot) => snapshot.docs
+          .map((doc) => AttendanceModel.fromJson({
+                ...doc.data(),
+                'id': doc.id,
+              }))
+          .toList());
+    } catch (e) {
+      AppLogger.instance.e('Error fetching attendances: $e');
+      return Stream.empty();
     }
-
-    Query<Map<String, dynamic>> query = _firestore
-        .collection('tenants')
-        .doc(tenantId)
-        .collection('attendances');
-
-    // Filter berdasarkan peran
-    if (!forAdmin || _authService.getRole() != 'admin') {
-      query = query.where('userId', isEqualTo: userId);
-    }
-
-    return query.snapshots().map((snapshot) => snapshot.docs
-        .map((doc) => AttendanceModel.fromJson({
-              ...doc.data(),
-              'id': doc.id,
-            }))
-        .toList());
   }
 
   // Mendapatkan daftar absensi untuk laporan
@@ -202,28 +219,74 @@ class AttendanceService extends GetxService {
     }
   }
 
-  // Mendapatkan lokasi saat ini
-  Future<Position> getCurrentLocation() async {
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      throw Exception('Location services are disabled');
+  Stream<AttendanceModel?> getTodayAttendanceStream() {
+    final tenantId = _authService.getTenantId();
+    final userId = _authService.currentUser.value?.uid;
+
+    if (tenantId == null || userId == null) {
+      return Stream.error('Invalid user or tenant');
     }
 
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        throw Exception('Location permissions are denied');
-      }
-    }
+    final now = DateTime.now();
+    final startOfDay = DateTime(now.year, now.month, now.day);
+    final endOfDay = DateTime(now.year, now.month, now.day, 23, 59, 59);
 
-    if (permission == LocationPermission.deniedForever) {
-      throw Exception('Location permissions are permanently denied');
-    }
-
-    return await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+    return _firestore
+        .collection('tenants')
+        .doc(tenantId)
+        .collection('attendances')
+        .where('userId', isEqualTo: userId)
+        .where('checkIn', isGreaterThanOrEqualTo: startOfDay)
+        .where('checkIn', isLessThanOrEqualTo: endOfDay)
+        .snapshots()
+        .map((snapshot) {
+      if (snapshot.docs.isEmpty) return null;
+      final doc = snapshot.docs.first;
+      return AttendanceModel.fromJson({
+        ...doc.data(),
+        'id': doc.id,
+      });
+    });
   }
+
+  // Mendapatkan lokasi saat ini
+  // Future<Position> getCurrentLocation() async {
+  //   bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  //   if (!serviceEnabled) {
+  //     throw Exception('Location services are disabled');
+  //   }
+
+  //   LocationPermission permission = await Geolocator.checkPermission();
+  //   if (permission == LocationPermission.denied) {
+  //     permission = await Geolocator.requestPermission();
+  //     if (permission == LocationPermission.denied) {
+  //       throw Exception('Location permissions are denied');
+  //     }
+  //   }
+
+  //   if (permission == LocationPermission.deniedForever) {
+  //     throw Exception('Location permissions are permanently denied');
+  //   }
+
+  //   return await Geolocator.getCurrentPosition(
+  //       desiredAccuracy: LocationAccuracy.high);
+  // }
+
+  // void startLocationUpdates() {
+  //   _locationSubscription = Geolocator.getPositionStream(
+  //     locationSettings: const LocationSettings(
+  //       accuracy: LocationAccuracy.high,
+  //       distanceFilter: 10,
+  //     ),
+  //   ).listen((Position pos) {
+  //     _locationController.add(pos);
+  //   });
+  // }
+
+  // void stopLocationUpdates() {
+  //   _locationSubscription?.cancel();
+  //   _locationSubscription = null;
+  // }
 
   // Placeholder untuk verifikasi wajah
   Future<bool> verifyFace() async {

@@ -24,32 +24,39 @@ class ClockInView extends GetView<ClockInController> {
             Positioned(
               child: SizedBox(
                 height: 600,
-                child: FlutterMap(
-                    options: MapOptions(
-                      initialCenter: LatLng(-6.956060, 108.452004),
-                      initialZoom: 19,
-                    ),
-                    children: [
-                      TileLayer(
-                        urlTemplate:
-                            'https://tile.openstreetmap.org/{z}/{x}/{y}.png', // For demonstration only
-                        userAgentPackageName: 'com.example.app',
+                child: Obx(() {
+                  return FlutterMap(
+                      options: MapOptions(
+                        initialCenter: LatLng(-6.956060, 108.452004),
+                        initialZoom: 19,
                       ),
-                      MarkerLayer(markers: [
-                        Marker(
-                          width: 200.0,
-                          height: 200.0,
-                          point: LatLng(-6.956060, 108.452004),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.purple500.withValues(alpha: 0.2),
-                              border: Border.all(color: AppColors.purple500),
+                      children: [
+                        TileLayer(
+                          urlTemplate:
+                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png', // For demonstration only
+                          userAgentPackageName: 'com.example.app',
+                        ),
+                        MarkerLayer(markers: [
+                          Marker(
+                            width: 200.0,
+                            height: 200.0,
+                            point: LatLng(
+                                controller.location.value?.latitude ??
+                                    -6.956060,
+                                controller.location.value?.longitude ??
+                                    108.452004),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color:
+                                    AppColors.purple500.withValues(alpha: 0.2),
+                                border: Border.all(color: AppColors.purple500),
+                              ),
                             ),
-                          ),
-                        )
-                      ])
-                    ]),
+                          )
+                        ])
+                      ]);
+                }),
               ),
             ),
             Positioned(
@@ -339,7 +346,8 @@ class ClockInView extends GetView<ClockInController> {
                   child: AppElevatedButton(
                     label: 'Selfie To Clock In',
                     onPressed: () {
-                      Get.toNamed(Routes.FACE_RECOGNITION);
+                      controller.clockIn();
+                      Get.back();
                     },
                     backgroundColor: AppColors.purple500,
                   ),

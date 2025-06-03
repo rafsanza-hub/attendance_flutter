@@ -387,7 +387,7 @@ class DashboardView extends GetView<DashboardController> {
 
   Widget _buildCheckInButton() {
     return GestureDetector(
-      onTap: controller.attendanceController.checkIn,
+      // onTap: controller.attendanceController.checkIn,
       child: Container(
         width: double.infinity,
         height: 56,
