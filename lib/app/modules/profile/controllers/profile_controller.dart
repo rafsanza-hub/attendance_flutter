@@ -7,7 +7,7 @@ class ProfileController extends GetxController {
 
   Future<void> logout() async {
     try {
-      Get.offAllNamed(Routes.LOGIN);
+      Get.offAllNamed(Routes.ONBOARDING);
       await _authService.signOut();
     } catch (e) {
       Get.snackbar('Error', e.toString());

@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:attendance_flutter/app/core/logger/logger.dart';
 import 'package:attendance_flutter/app/data/services/login_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/attendance_model.dart';
 
 class AttendanceService extends GetxService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final SupabaseClient _client = Supabase.instance.client;
   final AuthService _authService = Get.find<AuthService>();
 
   // Mencatat check-in
@@ -27,17 +27,17 @@ class AttendanceService extends GetxService {
         throw Exception('Invalid user or tenant');
       }
 
-      // Ambil pengaturan waktu tenant
-      final settingsDoc = await _firestore
-          .collection('tenants')
-          .doc(tenantId)
-          .collection('settings')
-          .doc('workingHours')
-          .get();
-      if (!settingsDoc.exists) {
+      // Ambil pengaturan waktu tenant dari Supabase
+      final settings = await _client
+          .from('tenant_settings')
+          .select('value')
+          .eq('tenantId', tenantId)
+          .eq('key', 'workingHours')
+          .maybeSingle();
+      if (settings == null) {
         throw Exception('Tenant settings not found');
       }
-      final workingHours = settingsDoc.data()!['value'] as Map<String, dynamic>;
+      final workingHours = (settings['value'] as Map).cast<String, dynamic>();
       final startTimeStr = workingHours['startTime'] as String;
       final days = List<String>.from(workingHours['days'] as List);
 
@@ -66,13 +66,9 @@ class AttendanceService extends GetxService {
       );
       final status = now.isAfter(startTime) ? 'late' : 'present';
 
-      // Simpan data absensi
-      final attendanceId = _firestore
-          .collection('tenants')
-          .doc(tenantId)
-          .collection('attendances')
-          .doc()
-          .id;
+      // Simpan data absensi di Supabase
+      final attendanceId =
+          'att_${DateTime.now().millisecondsSinceEpoch}_${userId.substring(0, 6)}';
       final attendance = AttendanceModel(
         id: attendanceId,
         userId: userId,
@@ -82,12 +78,10 @@ class AttendanceService extends GetxService {
         longitude: longitude,
         isFaceVerified: isFaceVerified,
       );
-      await _firestore
-          .collection('tenants')
-          .doc(tenantId)
-          .collection('attendances')
-          .doc(attendanceId)
-          .set(attendance.toJson());
+      await _client.from('attendances').insert({
+        ...attendance.toJson(),
+        'tenantId': tenantId,
+      });
       return attendanceId;
     } catch (e) {
       throw Exception('Failed to check in: $e');
@@ -107,26 +101,23 @@ class AttendanceService extends GetxService {
         throw Exception('Invalid user or tenant');
       }
 
-      // Periksa apakah absensi ada
-      final doc = await _firestore
-          .collection('tenants')
-          .doc(tenantId)
-          .collection('attendances')
-          .doc(attendanceId)
-          .get();
-      if (!doc.exists || doc.data()!['userId'] != userId) {
+      // Periksa apakah absensi ada di Supabase
+      final record = await _client
+          .from('attendances')
+          .select()
+          .eq('tenantId', tenantId)
+          .eq('id', attendanceId)
+          .maybeSingle();
+      if (record == null || (record['userId'] ?? record['userid']) != userId) {
         throw Exception('Attendance record not found or unauthorized');
       }
 
       // Update check-out
-      await _firestore
-          .collection('tenants')
-          .doc(tenantId)
-          .collection('attendances')
-          .doc(attendanceId)
-          .update({
-        'checkOut': DateTime.now(),
-      });
+      await _client
+          .from('attendances')
+          .update({'checkout': DateTime.now().toIso8601String()})
+          .eq('tenantId', tenantId)
+          .eq('id', attendanceId);
     } catch (e) {
       throw Exception('Failed to check out: $e');
     }
@@ -146,29 +137,30 @@ class AttendanceService extends GetxService {
         throw Exception('Invalid user or tenant');
       }
 
-      Query<Map<String, dynamic>> query = _firestore
-          .collection('tenants')
-          .doc(tenantId)
-          .collection('attendances');
+      final stream = _client
+          .from('attendances')
+          .stream(primaryKey: ['id']).order('checkin');
 
-      // Filter berdasarkan peran
+      Stream<List<Map<String, dynamic>>> filtered = stream;
+
       if (!forAdmin || _authService.getRole() != 'admin') {
-        query = query.where('userId', isEqualTo: userId);
+        filtered = filtered.map((rows) => rows
+            .where((row) => (row['userId'] ?? row['userid']) == userId)
+            .toList());
       }
-
-      // Filter berdasarkan tanggal
       if (startDate != null && endDate != null) {
-        query = query
-            .where('checkIn', isGreaterThanOrEqualTo: startDate)
-            .where('checkIn', isLessThanOrEqualTo: endDate);
+        filtered = filtered.map((rows) => rows.where((row) {
+              final dt = DateTime.tryParse(
+                  (row['checkIn'] ?? row['checkin']) as String? ?? '');
+              if (dt == null) return false;
+              return dt.isAfter(
+                      startDate.subtract(const Duration(seconds: 1))) &&
+                  dt.isBefore(endDate.add(const Duration(seconds: 1)));
+            }).toList());
       }
 
-      return query.snapshots().map((snapshot) => snapshot.docs
-          .map((doc) => AttendanceModel.fromJson({
-                ...doc.data(),
-                'id': doc.id,
-              }))
-          .toList());
+      return filtered
+          .map((rows) => rows.map((r) => AttendanceModel.fromJson(r)).toList());
     } catch (e) {
       AppLogger.instance.e('Error fetching attendances: $e');
       return Stream.empty();
@@ -190,29 +182,19 @@ class AttendanceService extends GetxService {
         throw Exception('Invalid user or tenant');
       }
 
-      Query<Map<String, dynamic>> query = _firestore
-          .collection('tenants')
-          .doc(tenantId)
-          .collection('attendances');
-
-      // Filter berdasarkan peran
+      final builder =
+          _client.from('attendances').select().eq('tenantid', tenantId);
       if (!forAdmin || _authService.getRole() != 'admin') {
-        query = query.where('userId', isEqualTo: userId);
+        builder.eq('userid', userId);
       }
-
-      // Filter berdasarkan tanggal
       if (startDate != null && endDate != null) {
-        query = query
-            .where('checkIn', isGreaterThanOrEqualTo: startDate)
-            .where('checkIn', isLessThanOrEqualTo: endDate);
+        builder.gte('checkin', startDate.toIso8601String());
+        builder.lte('checkin', endDate.toIso8601String());
       }
-
-      final snapshot = await query.get();
-      return snapshot.docs
-          .map((doc) => AttendanceModel.fromJson({
-                ...doc.data(),
-                'id': doc.id,
-              }))
+      final rows =
+          await builder.order('checkin').then((value) => value as List);
+      return rows
+          .map((r) => AttendanceModel.fromJson(r as Map<String, dynamic>))
           .toList();
     } catch (e) {
       throw Exception('Failed to get attendances: $e');
@@ -230,22 +212,19 @@ class AttendanceService extends GetxService {
     final now = DateTime.now();
     final startOfDay = DateTime(now.year, now.month, now.day);
     final endOfDay = DateTime(now.year, now.month, now.day, 23, 59, 59);
-
-    return _firestore
-        .collection('tenants')
-        .doc(tenantId)
-        .collection('attendances')
-        .where('userId', isEqualTo: userId)
-        .where('checkIn', isGreaterThanOrEqualTo: startOfDay)
-        .where('checkIn', isLessThanOrEqualTo: endOfDay)
-        .snapshots()
-        .map((snapshot) {
-      if (snapshot.docs.isEmpty) return null;
-      final doc = snapshot.docs.first;
-      return AttendanceModel.fromJson({
-        ...doc.data(),
-        'id': doc.id,
-      });
+    final stream = _client.from('attendances').stream(primaryKey: ['id']);
+    return stream.map((rows) {
+      final todays = rows.where((row) {
+        final dt = DateTime.tryParse(
+            (row['checkIn'] ?? row['checkin']) as String? ?? '');
+        if (dt == null) return false;
+        return row['tenantId'] == tenantId &&
+            (row['userId'] ?? row['userid']) == userId &&
+            dt.isAfter(startOfDay.subtract(const Duration(seconds: 1))) &&
+            dt.isBefore(endOfDay.add(const Duration(seconds: 1)));
+      }).toList();
+      if (todays.isEmpty) return null;
+      return AttendanceModel.fromJson(todays.first);
     });
   }
 

@@ -1,16 +1,17 @@
 import 'package:attendance_flutter/app/core/logger/logger.dart';
 import 'package:attendance_flutter/app/data/services/login_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/leave_model.dart';
 
 class LeaveService extends GetxService {
   // Dependencies
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final SupabaseClient _client = Supabase.instance.client;
   final AuthService _authService = Get.find<AuthService>();
 
   // Validasi pengguna dan tenant
   Future<void> _validateUserAndTenant(String operation) async {
+    await _authService.waitUntilUserLoaded();
     final userId = _authService.currentUser.value?.uid;
     final tenantId = _authService.getTenantId(); // Async call
     AppLogger.instance
@@ -42,18 +43,15 @@ class LeaveService extends GetxService {
       final leaveId =
           'leave_${userId}_${DateTime.now().millisecondsSinceEpoch}';
 
-      await _firestore
-          .collection('tenants')
-          .doc(tenantId)
-          .collection('leaves')
-          .doc(leaveId)
-          .set({
+      await _client.from('leaves').insert({
+        'id': leaveId,
+        'tenantId': tenantId,
         'userId': userId,
-        'startDate': Timestamp.fromDate(startDate),
-        'endDate': Timestamp.fromDate(endDate),
+        'startDate': startDate.toIso8601String(),
+        'endDate': endDate.toIso8601String(),
         'totalDays': totalDays,
         'status': 'review',
-        'submittedAt': FieldValue.serverTimestamp(),
+        'submittedAt': DateTime.now().toIso8601String(),
         'reviewedAt': null,
         'reviewedBy': null,
         'reason': reason,
@@ -77,20 +75,19 @@ class LeaveService extends GetxService {
 
       final userId = _authService.currentUser.value!.uid;
       final tenantId = (_authService.getTenantId())!;
-      Query<Map<String, dynamic>> query =
-          _firestore.collection('tenants').doc(tenantId).collection('leaves');
-
-      if (!forAdmin) {
-        query = query.where('userId', isEqualTo: userId);
-      }
-      if (status != null) {
-        query = query.where('status', isEqualTo: status);
-      }
-      query = query.orderBy('submittedAt', descending: true);
-
-      final snapshot = await query.get();
-      final leaves =
-          snapshot.docs.map((doc) => LeaveModel.fromFirestore(doc)).toList();
+      final rows = await _client
+          .from('leaves')
+          .select()
+          .match({'tenantId': tenantId}).order('submittedAt',
+              ascending: false) as List;
+      final filtered = rows.where((row) {
+        if (!forAdmin && row['userId'] != userId) return false;
+        if (status != null && row['status'] != status) return false;
+        return true;
+      }).toList();
+      final leaves = filtered
+          .map((row) => LeaveModel.fromJson(row as Map<String, dynamic>))
+          .toList();
 
       AppLogger.instance.i('LeaveService: Fetched ${leaves.length} leaves');
       return leaves;
@@ -112,19 +109,24 @@ class LeaveService extends GetxService {
       AppLogger.instance.d(
           'LeaveService: getLeavesStream - userId: $userId, forAdmin: $forAdmin');
 
-      Query<Map<String, dynamic>> query =
-          _firestore.collection('tenants').doc(tenantId).collection('leaves');
+      final stream = _client
+          .from('leaves')
+          .stream(primaryKey: ['id'])
+          .eq('tenantId', tenantId)
+          .order('submittedAt', ascending: false);
 
-      if (!forAdmin) {
-        query = query.where('userId', isEqualTo: userId);
-      }
-      if (status != null) {
-        query = query.where('status', isEqualTo: status);
-      }
-      query = query.orderBy('submittedAt', descending: true);
-
-      yield* query.snapshots().map((snapshot) =>
-          snapshot.docs.map((doc) => LeaveModel.fromFirestore(doc)).toList());
+      yield* stream.map((rows) {
+        var filtered = rows;
+        if (!forAdmin) {
+          filtered = filtered.where((row) => row['userId'] == userId).toList();
+        }
+        if (status != null) {
+          filtered = filtered.where((row) => row['status'] == status).toList();
+        }
+        return filtered
+            .map((row) => LeaveModel.fromJson(row as Map<String, dynamic>))
+            .toList();
+      });
     } catch (e) {
       AppLogger.instance.e('LeaveService: getLeavesStream error: $e');
       rethrow;
@@ -145,35 +147,36 @@ class LeaveService extends GetxService {
         throw Exception('Only admin can review leaves');
       }
 
-      final docRef = _firestore
-          .collection('tenants')
-          .doc(tenantId)
-          .collection('leaves')
-          .doc(leaveId);
-      final doc = await docRef.get();
-      if (!doc.exists) {
+      final record = await _client
+          .from('leaves')
+          .select()
+          .eq('tenantId', tenantId)
+          .eq('id', leaveId)
+          .maybeSingle();
+      if (record == null) {
         throw Exception('Leave record not found');
       }
-      if (doc.data()!['status'] != 'review') {
+      if (record['status'] != 'review') {
         throw Exception('Leave already reviewed');
       }
 
-      await docRef.update({
-        'status': status,
-        'reviewedAt': FieldValue.serverTimestamp(),
-        'reviewedBy': userId,
-      });
+      await _client
+          .from('leaves')
+          .update({
+            'status': status,
+            'reviewedAt': DateTime.now().toIso8601String(),
+            'reviewedBy': userId,
+          })
+          .eq('tenantId', tenantId)
+          .eq('id', leaveId);
 
       if (status == 'approved') {
-        final leaveUserId = doc.data()!['userId'];
-        final totalDays = doc.data()!['totalDays'];
-        await _firestore
-            .collection('tenants')
-            .doc(tenantId)
-            .collection('employees')
-            .doc(leaveUserId)
-            .update({
-          'leaveBalance': FieldValue.increment(-totalDays),
+        final leaveUserId = record['userId'];
+        final totalDays = record['totalDays'] as int;
+        await _client.rpc('decrement_leave_balance', params: {
+          'p_tenant_id': tenantId,
+          'p_user_id': leaveUserId,
+          'p_days': totalDays,
         });
       }
 
@@ -194,41 +197,40 @@ class LeaveService extends GetxService {
       final tenantId = (_authService.getTenantId())!;
 
       // Ambil kuota dari settings
-      final settingsDoc = await _firestore
-          .collection('tenants')
-          .doc(tenantId)
-          .get(); // Perbaikan: Ambil dokumen tenant langsung
-      final leaveQuota = settingsDoc.data()?['leaveQuota'] ?? 0;
-      final periodStart =
-          (settingsDoc.data()?['leavePeriodStart'] as Timestamp?)?.toDate();
-      final periodEnd =
-          (settingsDoc.data()?['leavePeriodEnd'] as Timestamp?)?.toDate();
+      final tenant = await _client
+          .from('tenants')
+          .select('leaveQuota, leavePeriodStart, leavePeriodEnd')
+          .eq('id', tenantId)
+          .maybeSingle();
+      final leaveQuota = tenant?['leaveQuota'] ?? 0;
+      final periodStart = tenant?['leavePeriodStart'] != null
+          ? DateTime.tryParse(tenant?['leavePeriodStart'])
+          : null;
+      final periodEnd = tenant?['leavePeriodEnd'] != null
+          ? DateTime.tryParse(tenant?['leavePeriodEnd'])
+          : null;
 
       // Ambil sisa cuti dari employees
-      final employeeDoc = await _firestore
-          .collection('tenants')
-          .doc(tenantId)
-          .collection('employees')
-          .doc(userId)
-          .get();
-      final leaveBalance = employeeDoc.data()?['leaveBalance'] ?? leaveQuota;
+      final employee = await _client
+          .from('employees')
+          .select('leaveBalance')
+          .eq('tenantId', tenantId)
+          .eq('id', userId)
+          .maybeSingle();
+      final leaveBalance = employee?['leaveBalance'] ?? leaveQuota;
 
       // Hitung cuti yang digunakan
-      final usedLeaves = await _firestore
-          .collection('tenants')
-          .doc(tenantId)
-          .collection('leaves')
-          .where('userId', isEqualTo: userId)
-          .where('status', isEqualTo: 'approved')
-          .where('startDate',
-              isGreaterThanOrEqualTo:
-                  Timestamp.fromDate(periodStart ?? DateTime.now()))
-          .where('startDate',
-              isLessThanOrEqualTo:
-                  Timestamp.fromDate(periodEnd ?? DateTime.now()))
-          .get();
-      final usedDays = usedLeaves.docs
-          .fold<int>(0, (acc, doc) => acc + (doc.data()['totalDays'] as int));
+      final rows = await _client
+          .from('leaves')
+          .select('totalDays')
+          .eq('tenantId', tenantId)
+          .eq('userId', userId)
+          .eq('status', 'approved')
+          .gte('startDate', (periodStart ?? DateTime.now()).toIso8601String())
+          .lte('startDate',
+              (periodEnd ?? DateTime.now()).toIso8601String()) as List;
+      final usedDays =
+          rows.fold<int>(0, (acc, row) => acc + (row['totalDays'] as int));
 
       AppLogger.instance.i(
           'LeaveService: Leave summary - available: $leaveBalance, used: $usedDays');

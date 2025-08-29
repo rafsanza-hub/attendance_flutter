@@ -1,9 +1,8 @@
 import 'package:attendance_flutter/app/core/logger/logger.dart';
 import 'package:attendance_flutter/app/routes/app_pages.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class RegisterController extends GetxController {
   final nameC = TextEditingController();
@@ -13,25 +12,24 @@ class RegisterController extends GetxController {
 
   RxBool isLoading = false.obs;
 
-  FirebaseAuth auth = FirebaseAuth.instance;
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final SupabaseClient _client = Supabase.instance.client;
 
   Future<void> register(String name, String email, String password) async {
     isLoading.value = true;
     try {
-      final userCredential = await auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-
-      if (userCredential.user != null) {
-        await firestore.collection('users').doc(userCredential.user!.uid).set({
-          'name': name,
+      final response = await _client.auth
+          .signUp(email: email, password: password, data: {'name': name});
+      final created = response.user;
+      if (created != null) {
+        await _client.from('users').insert({
+          'id': created.id,
           'email': email,
+          'role': 'employee',
         });
-        await userCredential.user!.sendEmailVerification();
       }
-      Get.offAllNamed(Routes.LOGIN);
+      Get.offAllNamed(Routes.ONBOARDING);
+    } on AuthException catch (e) {
+      Get.snackbar('Error', e.message);
     } catch (e) {
       AppLogger.instance.e(e);
     } finally {

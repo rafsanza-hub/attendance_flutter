@@ -1,6 +1,5 @@
 import 'package:attendance_flutter/app/modules/attendance/controllers/attendance_controller.dart';
 import 'package:attendance_flutter/app/routes/app_pages.dart';
-import 'package:attendance_flutter/app/screens/clock_in_screen.dart';
 import 'package:attendance_flutter/app/widgets/app_elevated_button.dart';
 import 'package:attendance_flutter/app/widgets/app_outlined_button.dart';
 import 'package:flutter/material.dart';
@@ -17,269 +16,276 @@ class AttendanceView extends GetView<AttendanceController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF1F3F8),
-      body: Stack(
+      body: ListView(
+        padding: EdgeInsets.zero,
         children: [
-          // Header Gradient
-          Container(
-            width: double.infinity,
-            height: 233,
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  AppColors.purple500,
-                  AppColors.purple600,
-                ],
-              ),
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(24),
-                bottomRight: Radius.circular(24),
-              ),
-            ),
-            child: Stack(
-              children: [
-                Positioned(
-                  right: 17,
-                  top: 57,
-                  child: Container(
-                    width: 101,
-                    height: 85,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/clock.png'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-                // Time Display
-
-                // Header Text
-                Positioned(
-                  left: 28,
-                  top: 71,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Let’s Clock-In!',
-                        style: AppTextStyles.headlineSmall.copyWith(
-                          color: AppColors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        'Don’t miss your clock in schedule',
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.purple200,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
+          Stack(
+            children: [
+              // Header Gradient
+              Container(
+                width: double.infinity,
+                height: 233,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      AppColors.purple500,
+                      AppColors.purple600,
                     ],
                   ),
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(24),
+                    bottomRight: Radius.circular(24),
+                  ),
                 ),
-              ],
-            ),
-          ),
-          // Main Content
-          SingleChildScrollView(
-            child: Obx(() {
-              return Column(
-                children: [
-                  const SizedBox(height: 148),
-                  // Total Working Hour Card
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 12),
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(8),
+                child: Stack(
+                  children: [
+                    Positioned(
+                      right: 17,
+                      top: 57,
+                      child: Container(
+                        width: 101,
+                        height: 85,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('assets/images/clock.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
+                    ),
+                    // Time Display
+
+                    // Header Text
+                    Positioned(
+                      left: 28,
+                      top: 71,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Header
                           Text(
-                            'Total Working Hour',
-                            style: AppTextStyles.titleSmall.copyWith(
-                              color: AppColors.gray900,
+                            'Let’s Clock-In!',
+                            style: AppTextStyles.headlineSmall.copyWith(
+                              color: AppColors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            'Don’t miss your clock in schedule',
+                            style: AppTextStyles.bodyMedium.copyWith(
+                              color: AppColors.purple200,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          const SizedBox(height: 2),
-                          Text(
-                            'Paid Period 1 Sept 2024 - 30 Sept 2024',
-                            style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.gray600,
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          // Stats
-                          Row(
-                            children: [
-                              // Today
-                              Expanded(
-                                child: Container(
-                                  height: 72,
-                                  padding: const EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.gray25,
-                                    borderRadius: BorderRadius.circular(8),
-                                    border: Border.all(color: AppColors.gray50),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          const Icon(
-                                            Iconsax.clock_copy,
-                                            size: 16,
-                                            color: AppColors.gray600,
-                                          ),
-                                          const SizedBox(width: 4),
-                                          Text(
-                                            'Today',
-                                            style: AppTextStyles.bodySmall
-                                                .copyWith(
-                                              color: AppColors.gray600,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Text(
-                                        controller.todayWorkingHours.toString(),
-                                        style:
-                                            AppTextStyles.titleLarge.copyWith(
-                                          color: AppColors.gray900,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              // This Pay Period
-                              Expanded(
-                                child: Container(
-                                  height: 72,
-                                  padding: const EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.gray25,
-                                    borderRadius: BorderRadius.circular(8),
-                                    border: Border.all(color: AppColors.gray50),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          const Icon(
-                                            Iconsax.calendar_copy,
-                                            size: 16,
-                                            color: AppColors.gray600,
-                                          ),
-                                          const SizedBox(width: 4),
-                                          Text(
-                                            'This Pay Period',
-                                            style: AppTextStyles.bodySmall
-                                                .copyWith(
-                                              color: AppColors.gray600,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Text(
-                                        '32:00 Hrs',
-                                        style:
-                                            AppTextStyles.titleLarge.copyWith(
-                                          color: AppColors.gray900,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          controller.isClockedIn && controller.isClockedOut
-                              ? const SizedBox.shrink()
-                              : Column(
-                                  children: [
-                                    SizedBox(height: 12),
-                                    controller.isClockedIn &&
-                                            !controller.isClockedOut
-                                        ? Row(children: [
-                                            Expanded(
-                                              child: AppOutlinedButton(
-                                                  label: 'Take A Break',
-                                                  onPressed: () {}),
-                                            ),
-                                            const SizedBox(width: 12),
-                                            Expanded(
-                                              child: AppElevatedButton(
-                                                onPressed: () async {
-                                                  await controller.checkOut();
-                                                },
-                                                label: 'Clock Out',
-                                              ),
-                                            ),
-                                          ])
-                                        :
-                                        // Clock In Button
-                                        AppElevatedButton(
-                                            label: 'Clock In',
-                                            onPressed: () {
-                                              Get.toNamed(Routes.CLOCK_IN);
-                                            },
-                                          ),
-                                  ],
-                                ),
                         ],
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  // Attendance Records
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Column(
-                      children: [
-                        ListView.separated(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: controller.attendances.length,
-                            itemBuilder: (context, index) {
-                              final attendance = controller.attendances[index];
-                              return _buildAttendanceRecord(
-                                date: '27 September 2024',
-                                totalHours: '${attendance.checkIn!.hour} hrs',
-                                clockInOut:
-                                    '${attendance.checkIn!.hour}:${attendance.checkIn!.minute}  —  ${attendance.checkOut ?? '-'}',
-                              );
-                            },
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(height: 16)),
-                      ],
+                  ],
+                ),
+              ),
+              // Main Content
+              Obx(() {
+                return Column(
+                  children: [
+                    const SizedBox(height: 148),
+                    // Total Working Hour Card
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
+                        decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Header
+                            Text(
+                              'Total Working Hour',
+                              style: AppTextStyles.titleSmall.copyWith(
+                                color: AppColors.gray900,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              'Paid Period 1 Sept 2024 - 30 Sept 2024',
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: AppColors.gray600,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            // Stats
+                            Row(
+                              children: [
+                                // Today
+                                Expanded(
+                                  child: Container(
+                                    height: 72,
+                                    padding: const EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.gray25,
+                                      borderRadius: BorderRadius.circular(8),
+                                      border:
+                                          Border.all(color: AppColors.gray50),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              Iconsax.clock_copy,
+                                              size: 16,
+                                              color: AppColors.gray600,
+                                            ),
+                                            const SizedBox(width: 4),
+                                            Text(
+                                              'Today',
+                                              style: AppTextStyles.bodySmall
+                                                  .copyWith(
+                                                color: AppColors.gray600,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          controller.todayWorkingHours
+                                              .toString(),
+                                          style:
+                                              AppTextStyles.titleLarge.copyWith(
+                                            color: AppColors.gray900,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                // This Pay Period
+                                Expanded(
+                                  child: Container(
+                                    height: 72,
+                                    padding: const EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.gray25,
+                                      borderRadius: BorderRadius.circular(8),
+                                      border:
+                                          Border.all(color: AppColors.gray50),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              Iconsax.calendar_copy,
+                                              size: 16,
+                                              color: AppColors.gray600,
+                                            ),
+                                            const SizedBox(width: 4),
+                                            Text(
+                                              'This Pay Period',
+                                              style: AppTextStyles.bodySmall
+                                                  .copyWith(
+                                                color: AppColors.gray600,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          '32:00 Hrs',
+                                          style:
+                                              AppTextStyles.titleLarge.copyWith(
+                                            color: AppColors.gray900,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            controller.isClockedIn && controller.isClockedOut
+                                ? const SizedBox.shrink()
+                                : Column(
+                                    children: [
+                                      SizedBox(height: 12),
+                                      controller.isClockedIn &&
+                                              !controller.isClockedOut
+                                          ? Row(children: [
+                                              Expanded(
+                                                child: AppOutlinedButton(
+                                                    label: 'Take A Break',
+                                                    onPressed: () {}),
+                                              ),
+                                              const SizedBox(width: 12),
+                                              Expanded(
+                                                child: AppElevatedButton(
+                                                  onPressed: () async {
+                                                    await controller.checkOut();
+                                                  },
+                                                  label: 'Clock Out',
+                                                ),
+                                              ),
+                                            ])
+                                          :
+                                          // Clock In Button
+                                          AppElevatedButton(
+                                              label: 'Clock In',
+                                              onPressed: () {
+                                                Get.toNamed(Routes.CLOCK_IN);
+                                              },
+                                            ),
+                                    ],
+                                  ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ],
-              );
-            }),
+                    const SizedBox(height: 16),
+                    // Attendance Records
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Column(
+                        children: [
+                          ListView.separated(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: controller.attendances.length,
+                              itemBuilder: (context, index) {
+                                final attendance =
+                                    controller.attendances[index];
+                                return _buildAttendanceRecord(
+                                  date: '27 September 2024',
+                                  totalHours: '${attendance.checkIn!.hour} hrs',
+                                  clockInOut:
+                                      '${attendance.checkIn!.hour}:${attendance.checkIn!.minute}  —  ${attendance.checkOut ?? '-'}',
+                                );
+                              },
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(height: 16)),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }),
+            ],
           ),
         ],
       ),

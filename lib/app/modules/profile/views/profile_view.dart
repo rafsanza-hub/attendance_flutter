@@ -92,7 +92,7 @@ class ProfileView extends GetView<ProfileController> {
                               iconColor: Color(0xFFF14E4E)),
                         ],
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 0),
                     ],
                   ),
                 ),

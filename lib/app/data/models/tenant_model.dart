@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class TenantModel {
   final String id;
   final String name;
@@ -19,7 +17,9 @@ class TenantModel {
     return TenantModel(
       id: json['id'] as String,
       name: json['name'] as String,
-      createdAt: (json['createdAt'] as Timestamp).toDate(),
+      createdAt: json['createdAt'] is String
+          ? DateTime.parse(json['createdAt'] as String)
+          : (json['createdAt'] as DateTime),
       adminId: json['adminId'] as String?,
       workingHours: json['workingHours'] != null
           ? WorkingHours.fromJson(json['workingHours'] as Map<String, dynamic>)
@@ -31,7 +31,7 @@ class TenantModel {
     return {
       'id': id,
       'name': name,
-      'createdAt': Timestamp.fromDate(createdAt),
+      'createdAt': createdAt.toIso8601String(),
       'adminId': adminId,
       'workingHours': workingHours?.toJson(),
     };

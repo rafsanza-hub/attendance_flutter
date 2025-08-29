@@ -1,8 +1,6 @@
 import 'package:attendance_flutter/app/core/constants/app_colors.dart';
 import 'package:attendance_flutter/app/core/constants/app_text_styles.dart';
 import 'package:attendance_flutter/app/modules/clock_in/controllers/clock_in_controller.dart';
-import 'package:attendance_flutter/app/routes/app_pages.dart';
-import 'package:attendance_flutter/app/screens/selfie_screen.dart';
 import 'package:attendance_flutter/app/widgets/app_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -33,7 +31,7 @@ class ClockInView extends GetView<ClockInController> {
                       children: [
                         TileLayer(
                           urlTemplate:
-                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png', // For demonstration only
+                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                           userAgentPackageName: 'com.example.app',
                         ),
                         MarkerLayer(markers: [

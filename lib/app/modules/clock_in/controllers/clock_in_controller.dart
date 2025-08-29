@@ -50,8 +50,9 @@ class ClockInController extends GetxController {
   }
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
+    await Geolocator.requestPermission();
     startLocationTracking();
   }
 

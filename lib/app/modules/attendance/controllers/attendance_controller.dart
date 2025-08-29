@@ -28,7 +28,7 @@ class AttendanceController extends GetxController {
   bool get isClockedIn => todayAttendance.value != null;
   bool get isClockedOut => todayAttendance.value?.checkOut != null;
   get todayWorkingHours {
-    if (isClockedIn) {
+    if (isClockedOut) {
       return todayAttendance.value?.checkOut!
           .difference(todayAttendance.value?.checkIn ?? DateTime.now())
           .inMinutes;

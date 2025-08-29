@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class LeaveModel {
   final String id;
   final String userId;
@@ -25,19 +23,20 @@ class LeaveModel {
     required this.reason,
   });
 
-  factory LeaveModel.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
+  factory LeaveModel.fromJson(Map<String, dynamic> json) {
     return LeaveModel(
-      id: doc.id,
-      userId: data['userId'] ?? '',
-      startDate: (data['startDate'] as Timestamp).toDate(),
-      endDate: (data['endDate'] as Timestamp).toDate(),
-      totalDays: data['totalDays'] ?? 0,
-      status: data['status'] ?? '',
-      submittedAt: (data['submittedAt'] as Timestamp).toDate(),
-      reviewedAt: (data['reviewedAt'] as Timestamp?)?.toDate(),
-      reviewedBy: data['reviewedBy'],
-      reason: data['reason'] ?? '',
+      id: json['id'] as String,
+      userId: json['userId'] as String,
+      startDate: DateTime.parse(json['startDate'] as String),
+      endDate: DateTime.parse(json['endDate'] as String),
+      totalDays: (json['totalDays'] as num).toInt(),
+      status: json['status'] as String,
+      submittedAt: DateTime.parse(json['submittedAt'] as String),
+      reviewedAt: json['reviewedAt'] != null
+          ? DateTime.tryParse(json['reviewedAt'] as String)
+          : null,
+      reviewedBy: json['reviewedBy'] as String?,
+      reason: json['reason'] as String,
     );
   }
 }

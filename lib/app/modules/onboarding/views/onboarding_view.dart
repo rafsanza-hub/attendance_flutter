@@ -1,7 +1,7 @@
 import 'package:attendance_flutter/app/core/constants/app_colors.dart';
 import 'package:attendance_flutter/app/core/constants/app_text_styles.dart';
 import 'package:attendance_flutter/app/modules/login/views/login_view.dart';
-import 'package:attendance_flutter/app/screens/onboarding_screen.dart';
+import 'package:attendance_flutter/app/modules/onboarding/controllers/onboarding_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -67,7 +67,9 @@ class OnboardingView extends GetView<OnboardingController> {
                   SizedBox(height: 35),
                   ElevatedButton(
                     onPressed: () {
-                      LoginView.show(context);
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        LoginView.show(context);
+                      });
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.purple500,

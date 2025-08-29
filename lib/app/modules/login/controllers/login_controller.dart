@@ -1,7 +1,6 @@
 import 'package:attendance_flutter/app/core/logger/logger.dart';
 import 'package:attendance_flutter/app/data/services/login_service.dart';
 import 'package:attendance_flutter/app/routes/app_pages.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,8 +11,7 @@ class LoginController extends GetxController {
   final formKey = GlobalKey<FormState>();
   final isLoading = false.obs;
 
-  final FirebaseAuth auth = FirebaseAuth.instance;
-  final currentUser = FirebaseAuth.instance.currentUser.obs;
+  final currentUser = Rxn<dynamic>();
 
   login() async {
     isLoading.value = true;
@@ -39,23 +37,15 @@ class LoginController extends GetxController {
         }
       } else {
         final tenantId = _authService.getTenantId();
+        AppLogger.instance.d('tenantId: $tenantId');
+
         if (tenantId != null) {
           Get.offNamed('/main');
         } else {
           await _authService.signOut();
           Get.snackbar(
-              'Error', 'Belum terdaftar, Mohon hubungi layanan bantuan.');
+              'Error', 'Belum terdaftar, Mohon hubungi layanan bantuan .');
         }
-      }
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        Get.snackbar('Error', 'No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        Get.snackbar('Error', 'Wrong password provided for that user.');
-      } else if (e.code == 'email-not-verified') {
-        Get.snackbar('Error', 'Please verify your email');
-      } else {
-        Get.snackbar('Error', e.message ?? 'An error occurred');
       }
     } catch (e) {
       AppLogger.instance.e('Error: $e');
@@ -67,8 +57,8 @@ class LoginController extends GetxController {
 
   Future<void> logout() async {
     try {
-      Get.offAllNamed(Routes.LOGIN);
-      await auth.signOut();
+      Get.offAllNamed(Routes.ONBOARDING);
+      await _authService.signOut();
     } catch (e) {
       Get.snackbar('Error', e.toString());
     }

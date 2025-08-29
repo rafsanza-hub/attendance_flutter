@@ -1,11 +1,9 @@
 import 'package:attendance_flutter/app/data/models/tenant_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class TenantService extends GetxService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final SupabaseClient _client = Supabase.instance.client;
 
   // Future<String> createTenant({
   //   required String name,
@@ -35,35 +33,32 @@ class TenantService extends GetxService {
     required String endTime,
   }) async {
     try {
-      // Buat tenant
-      final tenantId =
-          'tenant_${_firestore.collection('tenantsMeta').doc().id}';
+      // Buat tenant id dan admin di Supabase
+      final tenantId = 'tenant_${DateTime.now().millisecondsSinceEpoch}';
+      final adminRes = await _client.auth.signUp(
+        email: adminEmail,
+        password: adminPassword,
+      );
+      if (adminRes.user == null) {
+        throw Exception('Failed to create admin user');
+      }
+      final adminId = adminRes.user!.id;
 
-      // Buat admin tenant
-      final adminUser = await _auth.createUserWithEmailAndPassword(
-          email: adminEmail, password: adminPassword);
-
-      // Simpan di firestore
-      await _firestore.collection('users').doc(adminUser.user!.uid).set({
+      await _client.from('users').insert({
+        'id': adminId,
         'email': adminEmail,
         'tenantId': tenantId,
         'role': 'admin',
       });
 
-      // Simpan tenant di firestore
-      await _firestore.collection('tenantsMeta').doc(tenantId).set({
+      await _client.from('tenants').insert({
+        'id': tenantId,
         'name': name,
-        'createdAt': FieldValue.serverTimestamp(),
-        'adminId': adminUser.user!.uid,
+        'adminId': adminId,
       });
 
-      // Simpan Pengaturan waktu
-      await _firestore
-          .collection('tenants')
-          .doc(tenantId)
-          .collection('settings')
-          .doc('workingHours')
-          .set({
+      await _client.from('tenant_settings').upsert({
+        'tenantId': tenantId,
         'key': 'workingHours',
         'value': {
           'startTime': startTime,
@@ -71,7 +66,7 @@ class TenantService extends GetxService {
           'timezone': 'Asia/Jakarta',
           'days': ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
         },
-      });
+      }, onConflict: 'tenantId,key');
 
       return tenantId;
     } catch (e) {
@@ -82,18 +77,23 @@ class TenantService extends GetxService {
   // Get tenant
   Future<TenantModel?> getTenant(String tenantId) async {
     try {
-      final doc =
-          await _firestore.collection('tenantsMeta').doc(tenantId).get();
-      if (!doc.exists) return null;
+      final tenant = await _client
+          .from('tenants')
+          .select('id,name,createdAt,adminId')
+          .eq('id', tenantId)
+          .maybeSingle();
+      if (tenant == null) return null;
 
-      final settingsDoc =
-          await _firestore.collection('tenants').doc(tenantId).get();
+      final setting = await _client
+          .from('tenant_settings')
+          .select('value')
+          .eq('tenantId', tenantId)
+          .eq('key', 'workingHours')
+          .maybeSingle();
 
       return TenantModel.fromJson({
-        ...doc.data()!,
-        'id': doc.id,
-        'workingHours':
-            settingsDoc.exists ? settingsDoc.data()!['value'] : null,
+        ...tenant,
+        'workingHours': setting != null ? setting['value'] : null,
       });
     } catch (e) {
       rethrow;
@@ -101,7 +101,11 @@ class TenantService extends GetxService {
   }
 
   Future<bool> tenantExists(String tenantId) async {
-    final doc = await _firestore.collection('tenantMeta').doc(tenantId).get();
-    return doc.exists;
+    final row = await _client
+        .from('tenants')
+        .select('id')
+        .eq('id', tenantId)
+        .maybeSingle();
+    return row != null;
   }
 }
